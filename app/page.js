@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import Link from 'next/link'
+import '../app/globals.css'
 
 export default function Home() {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -22,7 +22,6 @@ export default function Home() {
       description: 'Video art exploring political landscapes through animated visuals.',
       year: '2024',
       category: 'Video Art',
-      link: '#'
     },
     {
       id: 2,
@@ -30,7 +29,6 @@ export default function Home() {
       description: 'Animation series examining ecological transformation.',
       year: '2024',
       category: 'Animation',
-      link: '#'
     },
     {
       id: 3,
@@ -38,7 +36,6 @@ export default function Home() {
       description: 'Visual narrative on land and memory in contemporary context.',
       year: '2023',
       category: 'Mixed Media',
-      link: '#'
     },
   ]
 
@@ -51,88 +48,139 @@ export default function Home() {
   }
 
   return (
-    <div className="w-full">
+    <div style={{ width: '100%' }}>
       {/* Navigation */}
-      <nav className={`fixed w-full top-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-white shadow-lg' : 'bg-transparent'
-      }`}>
-        <div className="max-w-6xl mx-auto px-6 py-6 flex justify-between items-center">
-          <div className="text-2xl font-bold">
-            <span className="gradient-text">HAADI</span>
+      <nav style={{
+        position: 'fixed',
+        width: '100%',
+        top: 0,
+        zIndex: 50,
+        backgroundColor: isScrolled ? 'white' : 'transparent',
+        transition: 'all 0.3s ease',
+        boxShadow: isScrolled ? '0 2px 10px rgba(0, 0, 0, 0.1)' : 'none',
+      }}>
+        <div style={{
+          maxWidth: '1200px',
+          margin: '0 auto',
+          padding: '1.5rem 1.5rem',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}>
+          <div style={{
+            fontSize: '1.5rem',
+            fontWeight: 'bold',
+            background: 'linear-gradient(135deg, #0066FF 0%, #00CC66 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+          }}>
+            HAADI
           </div>
-          <div className="flex gap-8 items-center">
-            <button onClick={() => scrollToSection('home')} className={`nav-link ${activeNav === 'home' ? 'text-primary font-semibold' : ''}`}>Home</button>
-            <button onClick={() => scrollToSection('about')} className={`nav-link ${activeNav === 'about' ? 'text-primary font-semibold' : ''}`}>About</button>
-            <button onClick={() => scrollToSection('work')} className={`nav-link ${activeNav === 'work' ? 'text-primary font-semibold' : ''}`}>Work</button>
-            <button onClick={() => scrollToSection('contact')} className={`nav-link ${activeNav === 'contact' ? 'text-primary font-semibold' : ''}`}>Contact</button>
+          <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
+            <button onClick={() => scrollToSection('home')} className="nav-link" style={{ color: activeNav === 'home' ? '#0066FF' : 'inherit' }}>Home</button>
+            <button onClick={() => scrollToSection('about')} className="nav-link" style={{ color: activeNav === 'about' ? '#0066FF' : 'inherit' }}>About</button>
+            <button onClick={() => scrollToSection('work')} className="nav-link" style={{ color: activeNav === 'work' ? '#0066FF' : 'inherit' }}>Work</button>
+            <button onClick={() => scrollToSection('contact')} className="nav-link" style={{ color: activeNav === 'contact' ? '#0066FF' : 'inherit' }}>Contact</button>
           </div>
         </div>
       </nav>
 
       {/* Hero Section */}
-      <section id="home" className="relative w-full h-screen flex items-center justify-center overflow-hidden bg-dark">
-        <div className="absolute inset-0 z-0">
-          {/* Replace this with your video */}
-          <div className="absolute inset-0 bg-gradient-to-br from-primary via-dark to-dark opacity-60 z-10"></div>
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="text-center z-20">
-              <div className="animate-fadeIn">
-                <h1 className="text-7xl md:text-8xl font-bold text-light mb-6 leading-tight">
-                  ABDUL
-                  <br />
-                  <span className="text-accent">HAADI</span>
-                </h1>
-                <p className="text-xl text-light/70 max-w-2xl mx-auto mb-8">
-                  Visual Artist | Video & Animation
-                </p>
-                <button
-                  onClick={() => scrollToSection('work')}
-                  className="px-8 py-4 bg-primary text-light font-semibold rounded-full hover:bg-accent transition-all duration-300 hover:shadow-xl"
-                >
-                  Explore Work
-                </button>
-              </div>
-            </div>
-          </div>
+      <section id="home" style={{
+        position: 'relative',
+        width: '100%',
+        height: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: 'linear-gradient(135deg, #000000 0%, #1a1a1a 100%)',
+        overflow: 'hidden',
+        padding: 0,
+      }}>
+        <div style={{
+          position: 'relative',
+          zIndex: 20,
+          textAlign: 'center',
+          animation: 'fadeIn 1s ease-in',
+        }}>
+          <h1 style={{
+            fontSize: '5rem',
+            fontWeight: 700,
+            lineHeight: 1.2,
+            marginBottom: '1.5rem',
+            color: 'white',
+          }}>
+            ABDUL
+            <br />
+            <span style={{ color: '#00CC66' }}>HAADI</span>
+          </h1>
+          <p style={{
+            fontSize: '1.25rem',
+            color: 'rgba(255, 255, 255, 0.7)',
+            marginBottom: '2rem',
+          }}>
+            Visual Artist | Video & Animation
+          </p>
+          <button
+            onClick={() => scrollToSection('work')}
+            className="cta-button"
+            style={{
+              padding: '1rem 2rem',
+              backgroundColor: '#0066FF',
+              color: 'white',
+              fontWeight: 600,
+              border: 'none',
+              borderRadius: '50px',
+              cursor: 'pointer',
+              fontSize: '1rem',
+            }}
+          >
+            Explore Work
+          </button>
         </div>
 
-        {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 animate-bounce">
-          <svg className="w-6 h-6 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div style={{
+          position: 'absolute',
+          bottom: '2rem',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          zIndex: 20,
+          animation: 'bounce 2s infinite',
+        }}>
+          <svg style={{ width: '1.5rem', height: '1.5rem', color: '#00CC66' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
           </svg>
         </div>
       </section>
 
       {/* About Section */}
-      <section id="about" className="py-24 px-6 bg-light">
-        <div className="max-w-4xl mx-auto">
-          <div className="animate-slideUp">
-            <h2 className="text-5xl md:text-6xl font-bold mb-12">
-              <span className="gradient-text">About</span>
-            </h2>
-            <div className="grid md:grid-cols-2 gap-12">
-              <div>
-                <p className="text-xl text-dark/70 leading-relaxed mb-6">
-                  Haadi is a Lahore-based visual artist working primarily in video and animation.
-                </p>
-                <p className="text-lg text-dark/60 leading-relaxed">
-                  Their practice explores the intersecting ideas of politics, land, and ecology. Through imaginative visual narratives that resemble moving paintings, they create worlds that interrogate complex social and environmental themes.
-                </p>
+      <section id="about" style={{ paddingTop: '6rem', paddingBottom: '6rem', backgroundColor: 'white' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          <h2 style={{ fontSize: '3rem', fontWeight: 700, marginBottom: '3rem', background: 'linear-gradient(135deg, #0066FF 0%, #00CC66 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+            About
+          </h2>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '3rem' }}>
+            <div>
+              <p style={{ fontSize: '1.1rem', lineHeight: 1.8, color: 'rgba(0, 0, 0, 0.7)', marginBottom: '1.5rem' }}>
+                Haadi is a Lahore-based visual artist working primarily in video and animation.
+              </p>
+              <p style={{ fontSize: '1rem', lineHeight: 1.8, color: 'rgba(0, 0, 0, 0.6)' }}>
+                Their practice explores the intersecting ideas of politics, land, and ecology. Through imaginative visual narratives that resemble moving paintings, they create worlds that interrogate complex social and environmental themes.
+              </p>
+            </div>
+            <div>
+              <div style={{ borderLeft: '4px solid #0066FF', paddingLeft: '1.5rem', marginBottom: '2rem' }}>
+                <h3 style={{ color: '#0066FF', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '0.5rem' }}>Location</h3>
+                <p style={{ fontSize: '1.1rem', margin: 0 }}>Lahore, Pakistan</p>
               </div>
-              <div className="space-y-6">
-                <div className="border-l-4 border-primary pl-6">
-                  <h3 className="text-primary font-semibold text-sm uppercase tracking-wider mb-2">Location</h3>
-                  <p className="text-lg">Lahore, Pakistan</p>
-                </div>
-                <div className="border-l-4 border-accent pl-6">
-                  <h3 className="text-accent font-semibold text-sm uppercase tracking-wider mb-2">Practice</h3>
-                  <p className="text-lg">Video Art, Animation, Digital Media</p>
-                </div>
-                <div className="border-l-4 border-primary pl-6">
-                  <h3 className="text-primary font-semibold text-sm uppercase tracking-wider mb-2">Focus</h3>
-                  <p className="text-lg">Politics, Land, Ecology, Visual Narrative</p>
-                </div>
+              <div style={{ borderLeft: '4px solid #00CC66', paddingLeft: '1.5rem', marginBottom: '2rem' }}>
+                <h3 style={{ color: '#00CC66', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '0.5rem' }}>Practice</h3>
+                <p style={{ fontSize: '1.1rem', margin: 0 }}>Video Art, Animation, Digital Media</p>
+              </div>
+              <div style={{ borderLeft: '4px solid #0066FF', paddingLeft: '1.5rem' }}>
+                <h3 style={{ color: '#0066FF', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '0.5rem' }}>Focus</h3>
+                <p style={{ fontSize: '1.1rem', margin: 0 }}>Politics, Land, Ecology, Visual Narrative</p>
               </div>
             </div>
           </div>
@@ -140,76 +188,72 @@ export default function Home() {
       </section>
 
       {/* Work Section */}
-      <section id="work" className="py-24 px-6 bg-dark text-light">
-        <div className="max-w-5xl mx-auto">
-          <div className="animate-slideUp">
-            <h2 className="text-5xl md:text-6xl font-bold mb-16">
-              <span className="text-accent">Works</span>
-            </h2>
-            <div className="space-y-12">
-              {projects.map((project, index) => (
-                <div key={project.id} className="project-card group cursor-pointer">
-                  <div className="border-b border-light/20 pb-8">
-                    <div className="flex justify-between items-start mb-4">
-                      <div>
-                        <h3 className="text-3xl font-bold mb-2 group-hover:text-accent transition-colors">{project.title}</h3>
-                        <p className="text-light/60">{project.description}</p>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-primary font-semibold">{project.year}</p>
-                        <p className="text-accent text-sm">{project.category}</p>
-                      </div>
-                    </div>
+      <section id="work" style={{ paddingTop: '6rem', paddingBottom: '6rem', backgroundColor: '#000000', color: 'white' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          <h2 style={{ fontSize: '3rem', fontWeight: 700, marginBottom: '3rem', color: '#00CC66' }}>Works</h2>
+          <div>
+            {projects.map((project) => (
+              <div key={project.id} className="project-item" style={{
+                borderBottom: '1px solid rgba(255, 255, 255, 0.2)',
+                padding: '2rem 0',
+                cursor: 'pointer',
+              }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '2rem', marginBottom: '1rem' }}>
+                  <div>
+                    <h3 style={{ fontSize: '1.8rem', fontWeight: 600, marginBottom: '0.5rem' }}>{project.title}</h3>
+                    <p style={{ fontSize: '1rem', color: 'rgba(255, 255, 255, 0.7)' }}>{project.description}</p>
+                  </div>
+                  <div style={{ textAlign: 'right' }}>
+                    <p style={{ color: '#0066FF', fontWeight: 600 }}>{project.year}</p>
+                    <p style={{ color: '#00CC66', fontSize: '0.9rem' }}>{project.category}</p>
                   </div>
                 </div>
-              ))}
-            </div>
-            <div className="mt-16 pt-8 border-t border-light/20">
-              <p className="text-light/50 text-sm">More works coming soon. Update with your project details and links.</p>
-            </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-24 px-6 bg-light">
-        <div className="max-w-3xl mx-auto text-center">
-          <div className="animate-slideUp">
-            <h2 className="text-5xl md:text-6xl font-bold mb-8">
-              <span className="gradient-text">Get In Touch</span>
-            </h2>
-            <p className="text-xl text-dark/60 mb-12">
-              Interested in collaborating or discussing work? Feel free to reach out.
-            </p>
+      <section id="contact" style={{ paddingTop: '6rem', paddingBottom: '6rem', backgroundColor: 'white', textAlign: 'center' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          <h2 style={{ fontSize: '3rem', fontWeight: 700, marginBottom: '2rem', background: 'linear-gradient(135deg, #0066FF 0%, #00CC66 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+            Get In Touch
+          </h2>
+          <p style={{ fontSize: '1.2rem', color: 'rgba(0, 0, 0, 0.7)', marginBottom: '2rem' }}>
+            Interested in collaborating or discussing work? Feel free to reach out.
+          </p>
 
-            <div className="space-y-6 mb-12">
-              <div>
-                <a
-                  href="mailto:abdulhadi.tahir98@gmail.com"
-                  className="text-2xl font-semibold text-primary hover:text-accent transition-colors"
-                >
-                  abdulhadi.tahir98@gmail.com
-                </a>
-              </div>
-              <div>
-                <a
-                  href="tel:+18046168110"
-                  className="text-2xl font-semibold text-primary hover:text-accent transition-colors"
-                >
-                  +1 (804) 616-8110
-                </a>
-              </div>
-            </div>
+          <div style={{ marginBottom: '2rem' }}>
+            <a href="mailto:abdulhadi.tahir98@gmail.com" style={{
+              fontSize: '1.5rem',
+              fontWeight: 600,
+              color: '#0066FF',
+              textDecoration: 'none',
+              display: 'block',
+              marginBottom: '1rem',
+            }}>
+              abdulhadi.tahir98@gmail.com
+            </a>
+            <a href="tel:+18046168110" style={{
+              fontSize: '1.5rem',
+              fontWeight: 600,
+              color: '#0066FF',
+              textDecoration: 'none',
+              display: 'block',
+            }}>
+              +1 (804) 616-8110
+            </a>
+          </div>
 
-            <div className="flex justify-center gap-8 mb-12">
-              <a href="#" className="text-primary hover:text-accent font-semibold transition-colors">Instagram</a>
-              <a href="#" className="text-primary hover:text-accent font-semibold transition-colors">LinkedIn</a>
-              <a href="#" className="text-primary hover:text-accent font-semibold transition-colors">Vimeo</a>
-            </div>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem', marginBottom: '2rem' }}>
+            <a href="#" style={{ color: '#0066FF', fontWeight: 600, textDecoration: 'none' }}>Instagram</a>
+            <a href="#" style={{ color: '#0066FF', fontWeight: 600, textDecoration: 'none' }}>LinkedIn</a>
+            <a href="#" style={{ color: '#0066FF', fontWeight: 600, textDecoration: 'none' }}>Vimeo</a>
+          </div>
 
-            <div className="pt-8 border-t border-dark/10">
-              <p className="text-sm text-dark/50">© 2024 Abdul Haadi. All rights reserved.</p>
-            </div>
+          <div style={{ borderTop: '1px solid rgba(0, 0, 0, 0.1)', paddingTop: '2rem', marginTop: '2rem' }}>
+            <p style={{ fontSize: '0.9rem', color: 'rgba(0, 0, 0, 0.5)' }}>© 2024 Abdul Haadi. All rights reserved.</p>
           </div>
         </div>
       </section>
