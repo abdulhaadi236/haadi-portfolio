@@ -2,6 +2,12 @@
 
 Record of choices and why, newest first.
 
+## 2026-10-03 — Video quality vs size; nav sizing
+- User found 720p/CRF33 too blurry. Footage (dense particles) compresses poorly: 1080p needs ~30MB/20s for good quality.
+  Chosen: 1080p HEVC CRF32 (28MB) / H.264 CRF30 (34MB); phones 720p HEVC CRF33 (14MB) / H.264 CRF30 (19MB). SSIM vs master ≈0.92–0.93 (old: 0.83).
+  AV1 tested: no meaningful gain on this footage, dropped. Encodes made from a CRF10 1080p master of the 0:05–0:26 loop.
+- Nav text/height deliberately smaller than Figma (user request: "standard website size").
+
 ## 2026-10-03 — Hero video & nav
 - Design source: Figma file `J4gQYhBJRVQoV37zq005mt`, frame "Desktop - 1" (node 1:2). "Desktop - 2" (node 2:22) exists, not yet built.
 - Video: source `Background Video/Basood Mukalma .mp4` (268MB, gitignored). Web loop = 0:05–0:26, last 1s crossfaded into first for a seamless loop; H.264 CRF 33, no audio. Re-encode command is in git history of this entry's commit.

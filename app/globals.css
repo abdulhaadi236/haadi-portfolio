@@ -9,7 +9,7 @@
   --accent: #00CC66;
   --dark: #000000;
   --light: #FFFFFF;
-  --nav-height: 94px;
+  --nav-height: 64px;
   --nav-blur: 30px;
 }
 
@@ -36,7 +36,8 @@ section {
 }
 
 /* Navigation — frosted glass bar (Figma: Desktop - 1, 1440 wide)
-   Logo at x=155, links start at x=513, 145px gaps, Inter 30px, bar 94px tall. */
+   Positions from Figma (logo x=155, links start x=513); text and bar height reduced
+   to standard sizes at the user's request (Figma: 30px text, 94px bar). */
 .site-nav {
   position: fixed;
   top: 0;
@@ -52,6 +53,7 @@ section {
 }
 
 .site-nav__inner {
+  position: relative;
   height: 100%;
   display: flex;
   align-items: center;
@@ -65,20 +67,22 @@ section {
   border: none;
   color: inherit;
   font-family: inherit;
-  font-size: clamp(18px, 2.084vw, 30px);
+  font-size: 16px;
   line-height: normal;
   cursor: pointer;
 }
 
 .site-nav__logo {
+  font-size: 18px;
   font-weight: 500;
 }
 
 .site-nav__links {
   display: flex;
   align-items: center;
-  gap: clamp(1.25rem, 10.07vw, 145px);
-  margin-left: clamp(1.5rem, 19.1vw, 275px);
+  gap: 48px;
+  position: absolute;
+  left: 35.63vw;
 }
 
 .nav-link {
@@ -348,11 +352,13 @@ h2 {
 /* Responsive */
 @media (max-width: 768px) {
   :root {
-    --nav-height: 64px;
+    --nav-height: 56px;
   }
 
   .site-nav__links {
+    position: static;
     margin-left: auto;
+    gap: 1.5rem;
   }
 
   .about-grid {

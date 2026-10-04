@@ -56,9 +56,10 @@ export default function Home() {
 
       {/* Hero — full-screen looping background video */}
       <section id="home" className="hero">
+        {/* Browser plays the first source it supports: 1080p on wider screens, 720p on phones;
+            HEVC where supported (smaller), H.264 everywhere else. */}
         <video
           className="hero__video"
-          src="/video/hero-loop.mp4"
           poster="/video/hero-poster.jpg"
           autoPlay
           muted
@@ -66,7 +67,12 @@ export default function Home() {
           playsInline
           preload="auto"
           aria-hidden="true"
-        />
+        >
+          <source src="/video/hero-1080-hevc.mp4" type='video/mp4; codecs="hvc1.1.6.L120.90"' media="(min-width: 768px)" />
+          <source src="/video/hero-1080-h264.mp4" type='video/mp4; codecs="avc1.640032"' media="(min-width: 768px)" />
+          <source src="/video/hero-720-hevc.mp4" type='video/mp4; codecs="hvc1.1.6.L93.90"' />
+          <source src="/video/hero-720-h264.mp4" type='video/mp4; codecs="avc1.64001F"' />
+        </video>
       </section>
 
       {/* About Section */}
