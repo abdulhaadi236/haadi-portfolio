@@ -80,7 +80,7 @@ section {
 .site-nav__links {
   display: flex;
   align-items: center;
-  gap: 48px;
+  gap: 80px;
   position: absolute;
   left: 50%;
   transform: translateX(-50%);

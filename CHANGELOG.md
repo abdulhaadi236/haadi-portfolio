@@ -1,5 +1,8 @@
 # Changelog
 
+## 2026-10-03 — Wider nav link spacing
+- Desktop gap between work / about / contact: 48px → 80px (still centred).
+
 ## 2026-10-03 — Centred nav links
 - work / about / contact centred in the top bar on desktop (phones: right-aligned next to logo).
 
