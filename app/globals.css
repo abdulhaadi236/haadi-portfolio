@@ -36,8 +36,8 @@ section {
 }
 
 /* Navigation — frosted glass bar (Figma: Desktop - 1, 1440 wide)
-   Positions from Figma (logo x=155, links start x=513); text and bar height reduced
-   to standard sizes at the user's request (Figma: 30px text, 94px bar). */
+   Logo position from Figma (x=155); links centred in the bar and text/bar height reduced
+   at the user's request (Figma: links at x=513, 30px text, 94px bar). */
 .site-nav {
   position: fixed;
   top: 0;
@@ -82,7 +82,8 @@ section {
   align-items: center;
   gap: 48px;
   position: absolute;
-  left: 35.63vw;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .nav-link {
@@ -357,6 +358,7 @@ h2 {
 
   .site-nav__links {
     position: static;
+    transform: none;
     margin-left: auto;
     gap: 1.5rem;
   }
