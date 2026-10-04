@@ -4,3 +4,6 @@ out/
 .DS_Store
 .env*.local
 .netlify/
+
+# Raw source media (too large for git; web-optimised copies go in public/)
+Background Video/

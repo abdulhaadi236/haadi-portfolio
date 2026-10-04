@@ -1,19 +1,10 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import '../app/globals.css'
 
 export default function Home() {
-  const [isScrolled, setIsScrolled] = useState(false)
   const [activeNav, setActiveNav] = useState('home')
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50)
-    }
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
 
   const projects = [
     {
@@ -49,109 +40,33 @@ export default function Home() {
 
   return (
     <div style={{ width: '100%' }}>
-      {/* Navigation */}
-      <nav style={{
-        position: 'fixed',
-        width: '100%',
-        top: 0,
-        zIndex: 50,
-        backgroundColor: isScrolled ? 'white' : 'transparent',
-        transition: 'all 0.3s ease',
-        boxShadow: isScrolled ? '0 2px 10px rgba(0, 0, 0, 0.1)' : 'none',
-      }}>
-        <div style={{
-          maxWidth: '1200px',
-          margin: '0 auto',
-          padding: '1.5rem 1.5rem',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}>
-          <div style={{
-            fontSize: '1.5rem',
-            fontWeight: 'bold',
-            background: 'linear-gradient(135deg, #0066FF 0%, #00CC66 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
-          }}>
-            HAADI
-          </div>
-          <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
-            <button onClick={() => scrollToSection('home')} className="nav-link" style={{ color: activeNav === 'home' ? '#0066FF' : 'inherit' }}>Home</button>
-            <button onClick={() => scrollToSection('about')} className="nav-link" style={{ color: activeNav === 'about' ? '#0066FF' : 'inherit' }}>About</button>
-            <button onClick={() => scrollToSection('work')} className="nav-link" style={{ color: activeNav === 'work' ? '#0066FF' : 'inherit' }}>Work</button>
-            <button onClick={() => scrollToSection('contact')} className="nav-link" style={{ color: activeNav === 'contact' ? '#0066FF' : 'inherit' }}>Contact</button>
+      {/* Navigation — frosted glass bar (Figma: Desktop - 1 / Rectangle 1) */}
+      <nav className="site-nav">
+        <div className="site-nav__inner">
+          <button onClick={() => scrollToSection('home')} className="site-nav__logo">
+            Haadi
+          </button>
+          <div className="site-nav__links">
+            <button onClick={() => scrollToSection('work')} className={`nav-link${activeNav === 'work' ? ' is-active' : ''}`}>work</button>
+            <button onClick={() => scrollToSection('about')} className={`nav-link${activeNav === 'about' ? ' is-active' : ''}`}>about</button>
+            <button onClick={() => scrollToSection('contact')} className={`nav-link${activeNav === 'contact' ? ' is-active' : ''}`}>contact</button>
           </div>
         </div>
       </nav>
 
-      {/* Hero Section */}
-      <section id="home" style={{
-        position: 'relative',
-        width: '100%',
-        height: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        background: 'linear-gradient(135deg, #000000 0%, #1a1a1a 100%)',
-        overflow: 'hidden',
-        padding: 0,
-      }}>
-        <div style={{
-          position: 'relative',
-          zIndex: 20,
-          textAlign: 'center',
-          animation: 'fadeIn 1s ease-in',
-        }}>
-          <h1 style={{
-            fontSize: '5rem',
-            fontWeight: 700,
-            lineHeight: 1.2,
-            marginBottom: '1.5rem',
-            color: 'white',
-          }}>
-            ABDUL
-            <br />
-            <span style={{ color: '#00CC66' }}>HAADI</span>
-          </h1>
-          <p style={{
-            fontSize: '1.25rem',
-            color: 'rgba(255, 255, 255, 0.7)',
-            marginBottom: '2rem',
-          }}>
-            Visual Artist | Video & Animation
-          </p>
-          <button
-            onClick={() => scrollToSection('work')}
-            className="cta-button"
-            style={{
-              padding: '1rem 2rem',
-              backgroundColor: '#0066FF',
-              color: 'white',
-              fontWeight: 600,
-              border: 'none',
-              borderRadius: '50px',
-              cursor: 'pointer',
-              fontSize: '1rem',
-            }}
-          >
-            Explore Work
-          </button>
-        </div>
-
-        <div style={{
-          position: 'absolute',
-          bottom: '2rem',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          zIndex: 20,
-          animation: 'bounce 2s infinite',
-        }}>
-          <svg style={{ width: '1.5rem', height: '1.5rem', color: '#00CC66' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-          </svg>
-        </div>
+      {/* Hero — full-screen looping background video */}
+      <section id="home" className="hero">
+        <video
+          className="hero__video"
+          src="/video/hero-loop.mp4"
+          poster="/video/hero-poster.jpg"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          aria-hidden="true"
+        />
       </section>
 
       {/* About Section */}
