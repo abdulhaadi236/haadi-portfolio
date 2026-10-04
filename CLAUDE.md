@@ -9,7 +9,7 @@ Portfolio site for Abdul Haadi, visual artist.
 ## Where things live
 - Local: `/Users/haadih/Desktop/Website`
 - GitHub: https://github.com/abdulhaadi236/haadi-portfolio (branch `main`)
-- Netlify site: `haadih` → https://haadih.netlify.app (site id `61716abf-9fd0-4f05-b9ff-141f3871b30c`)
+- Netlify site: `haadih` → https://haadih.netlify.app (site id `61716abf-9fd0-4f05-b9ff-141f3871b30c`) — linked to the GitHub repo (confirmed by user 2026-10-03), auto-deploys on push to `main`
 
 ## Workflow
 1. **Iterate locally.** Preview with the `dev` config in `.claude/launch.json` (http://localhost:3000).
