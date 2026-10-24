@@ -23,6 +23,11 @@ export default function WorkList() {
           const Tag = work.youtube ? 'a' : 'span'
           return (
             <li key={work.slug} style={{ '--distance': distance }}>
+              {work.youtube && (
+                <a className="work-list__thumb-link" href={work.youtube} target="_blank" rel="noopener noreferrer" tabIndex={-1} aria-hidden="true">
+                  <img className="work-list__thumb" src={`/images/work/${work.slug}.jpg`} alt="" loading="lazy" />
+                </a>
+              )}
               <Tag
                 className="work-list__title"
                 {...(work.youtube ? { href: work.youtube, target: '_blank', rel: 'noopener noreferrer' } : {})}

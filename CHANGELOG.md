@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-10-24 — Design + technical review
+- Work deck: stack 10px steps; hovered card rises 320px (≈ full image) and returns to full size/sharpness.
+- One lime accent everywhere (#C0FF65).
+- Bio 14px → 15px for readability (long ~120-char lines).
+- Work chooser: "Commercial Work" no longer overflows 768–900px screens.
+- Phones/tablets (≤1100px): Visual Arts list becomes a gallery — 16:9 thumbnail above each title, all sharp, linked to YouTube (previously no thumbnails at all).
+- Accessibility: hidden h1 on every page, visible keyboard focus, reduced-motion support; video has no PiP/cast overlays.
+- SEO/sharing: title template, description, Open Graph + Twitter card (DeeDar still), metadataBase.
+- Added lime-square favicon (`app/icon.svg`) and custom 404 page in block-title style.
+- README rewritten. Production build verified clean (all routes static).
+
 ## 2026-10-24 — Redesigned Work chooser, In production, new Contact page
 - Work chooser: "Visual / Arts / Work" and "Commercial / Work" (Montserrat 50px) each over a 200×172 lime block (#C0FF65); block springs 6px up-left on hover. Replaces the slate gradient bars.
 - In production: "This page / is in / production" (54px medium) over a lime block.

@@ -1,9 +1,10 @@
-export const metadata = { title: 'Contact — Abdul Haadi' }
+export const metadata = { title: 'Contact' }
 
 // Contact (Figma redesign, 2026-10-24)
 export default function Contact() {
   return (
     <main className="page centred">
+      <h1 className="visually-hidden">Contact</h1>
       <div className="block-title contact">
         <i className="block-title__square" aria-hidden="true" />
         <p>

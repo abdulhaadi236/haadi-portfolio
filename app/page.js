@@ -2,6 +2,7 @@
 export default function Home() {
   return (
     <main className="home">
+      <h1 className="visually-hidden">Abdul Haadi — Visual Artist</h1>
       {/* Browser plays the first source it supports: 1080p on wider screens, 720p on phones;
           HEVC where supported (smaller), H.264 everywhere else. The loop's
           last 2s dissolve into its first 2s, so the restart is never a hard cut. */}
@@ -12,6 +13,8 @@ export default function Home() {
         muted
         loop
         playsInline
+        disablePictureInPicture
+        disableRemotePlayback
         preload="auto"
         aria-hidden="true"
       >

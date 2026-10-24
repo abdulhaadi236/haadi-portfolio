@@ -1,4 +1,4 @@
-export const metadata = { title: 'Commercial Work — Abdul Haadi' }
+export const metadata = { title: 'Commercial Work' }
 
 // Commercial work placeholder (Figma redesign, 2026-10-24)
 export default function Commercial() {

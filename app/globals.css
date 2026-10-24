@@ -1,7 +1,6 @@
 /* Design tokens — sampled from the Figma frames (Figma file J4gQYhBJRVQoV37zq005mt) */
 :root {
-  --lime: #CBFF63;
-  --lime-block: #C0FF65;   /* large blocks on Work / In production / Contact */
+  --lime: #C0FF65;         /* the one accent colour (Figma blocks) */
   --slate: #516E6F;
   --ink: #000000;
   --paper: #FFFFFF;
@@ -33,6 +32,22 @@ a {
 
 img {
   display: block;
+}
+
+/* Headings for screen readers and search engines, not shown on screen */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* Visible keyboard focus everywhere (mouse clicks don't show it) */
+a:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
 }
 
 .page {
@@ -170,8 +185,8 @@ img {
 .about__bio {
   max-width: 805px;
   margin-top: 60px;
-  font-size: 14px;
-  line-height: 1.55;
+  font-size: 15px;
+  line-height: 1.6;
 }
 
 .about__bio p + p {
@@ -219,7 +234,7 @@ img {
   position: absolute;
   width: 200px;
   height: 172px;
-  background: var(--lime-block);
+  background: var(--lime);
   transition: transform 0.32s var(--ease-spring);
 }
 
@@ -252,7 +267,7 @@ img {
 }
 
 .work-choice__item--commercial {
-  left: calc(50% + 131px);
+  left: min(calc(50% + 131px), calc(100% - 340px));   /* never runs off narrower screens */
   top: 638px;
 }
 
@@ -310,8 +325,9 @@ img {
 }
 
 .work-list__deck {
-  --step: 14px;          /* offset between stacked cards */
-  --pull: 170px;         /* a hovered card's top rises this far above the pile, whatever its depth */
+  --step: 10px;          /* offset between stacked cards */
+  --pull: 320px;         /* a hovered card's top rises this far above the pile, whatever its depth —
+                            372px cards, so only ~50px stays tucked in the pile */
   position: relative;
   display: block;
   width: calc(564px + 11 * var(--step));
@@ -338,9 +354,8 @@ img {
 
 .work-list__card.is-pulled {
   transform:
-    translate(calc(var(--depth) * var(--step)), calc(var(--pull) * -1))
-    scale(calc(1 - var(--depth) * 0.012));
-  filter: none;
+    translate(calc(var(--depth) * var(--step)), calc(var(--pull) * -1));
+  filter: none;   /* full size and sharp once lifted, whatever its depth */
 }
 
 .work-list__card img {
@@ -381,9 +396,44 @@ img {
 }
 
 /* ---------- Narrow screens ---------- */
+/* Per-title thumbnail — only shown when the deck is hidden (narrower screens) */
+.work-list__thumb {
+  display: none;
+}
+
 @media (max-width: 1100px) {
   .work-list__deck {
     display: none;
+  }
+
+  .work-list__inner {
+    margin-right: 16px;
+  }
+
+  .work-list__titles {
+    width: min(564px, 100%);
+    min-width: 0;   /* don't let 1200px thumbnails widen the column */
+  }
+
+  /* Gallery layout: every title sharp, no moving marker */
+  .work-list__titles li {
+    height: auto;
+    margin-bottom: 40px;
+    filter: none;
+    opacity: 1;
+  }
+
+  .work-list__square {
+    display: none;
+  }
+
+  .work-list__thumb {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    margin-bottom: 12px;
+    background: #eee;
   }
 }
 
@@ -414,7 +464,7 @@ img {
   }
 
   .work-list__titles {
-    width: auto;
+    width: 100%;
   }
 
   .work-choice {
@@ -464,4 +514,28 @@ img {
   .work-list__square {
     display: none;
   }
+}
+
+/* Respect visitors who ask their device for less motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
+/* ---------- 404 ---------- */
+.not-found {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 88px;   /* clear of the lime block that hangs below the title */
+}
+
+.not-found__home {
+  font-size: 18px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }

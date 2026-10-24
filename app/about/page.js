@@ -1,9 +1,10 @@
-export const metadata = { title: 'About — Abdul Haadi' }
+export const metadata = { title: 'About' }
 
 // About (Figma: About frame, node 14:14)
 export default function About() {
   return (
     <main className="page about">
+      <h1 className="visually-hidden">About</h1>
       <div className="about__inner">
         <div className="about__photo">
           <i className="about__photo-accent" aria-hidden="true" />
