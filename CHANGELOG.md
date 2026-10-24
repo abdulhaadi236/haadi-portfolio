@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-10-24 — YouTube links
+- All 12 works linked to their YouTube videos (titles + thumbnails, open in new tab). Links matched by YouTube video title; user's list had 13 entries with "Circus 2" duplicated.
+- Pulled-up thumbnail stays up while the mouse travels onto it, so it can be clicked.
+
 ## 2026-10-24 — Review round 2 (partial)
 - Nav hover square: 6px rise with springy overshoot (0.32s), quick fade-in — more tactile.
 - Work deck: pile of discs — cards keep fixed slots in list order; hovering a title slides that card straight up out of the pile (top rises 170px above pile, lower part stays behind cards in front). Pile moved lower to make room.

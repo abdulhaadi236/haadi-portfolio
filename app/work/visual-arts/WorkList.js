@@ -13,8 +13,10 @@ export default function WorkList() {
   const n = works.length
 
   return (
-    <div className="work-list__inner">
-      <ol className="work-list__titles" style={{ '--active': active }} onMouseLeave={() => setPulled(null)}>
+    // Leaving the whole area (titles + deck) drops the card back, so the mouse can travel
+    // from a title onto its pulled-up thumbnail and click it
+    <div className="work-list__inner" onMouseLeave={() => setPulled(null)}>
+      <ol className="work-list__titles" style={{ '--active': active }}>
         <i className="work-list__square" aria-hidden="true" />
         {works.map((work, i) => {
           const distance = Math.min(Math.abs(i - active), 5)
@@ -38,22 +40,21 @@ export default function WorkList() {
       {/* All works stacked in list order, like a pile of discs: each card has a fixed slot,
           deeper ones smaller and blurrier. Hovering a title slides its card straight up out
           of the pile (it stays in its slot, so cards in front still cover its lower part). */}
-      <a
-        className="work-list__deck"
-        {...(pulled !== null && works[pulled].youtube ? { href: works[pulled].youtube, target: '_blank', rel: 'noopener noreferrer' } : {})}
-        tabIndex={-1}
-        aria-hidden="true"
-      >
+      <div className="work-list__deck" aria-hidden="true">
         {works.map((work, i) => (
-          <div
+          <a
             key={work.slug}
+            href={work.youtube}
+            target="_blank"
+            rel="noopener noreferrer"
+            tabIndex={-1}
             className={`work-list__card${i === pulled ? ' is-pulled' : ''}`}
             style={{ '--depth': i, zIndex: n - i }}
           >
             <img src={`/images/work/${work.slug}.jpg`} alt="" />
-          </div>
+          </a>
         ))}
-      </a>
+      </div>
     </div>
   )
 }
