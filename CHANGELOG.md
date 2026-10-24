@@ -1,5 +1,15 @@
 # Changelog
 
+## 2026-10-23 — Full redesign from Figma (branch `redesign`)
+- New pages: Home (`/`), About (`/about`), Work chooser (`/work`), Visual Arts list (`/work/visual-arts`), Commercial "in production" (`/work/commercial`). Contact = mailto link.
+- Shared nav (Figma "Nav", 55px, Montserrat): lime square rises from below on hover, half on / half below the bar.
+- Home: DeeDar background loop (115s, last 2s dissolve into first 2s). 1080p HEVC 5.4MB / H.264 8.9MB; 720p HEVC 1.6MB / H.264 3.2MB.
+- About: profile photo (Figma crop) + lime accent, bio, Download Resume (`public/documents/Abdul_Haadi_Resume.pdf`).
+- Work chooser: slate bars → lime gradient + bottom blur on hover.
+- Visual Arts list: 12 titles, hovered one sharp with lime square, others progressively blurred; 3-card thumbnail deck. Thumbnails resized to 1200px JPEG in `public/images/work/`.
+- YouTube links: placeholders in `app/data/works.js` (Figma MCP rate-limited — links not yet read).
+- Removed old chairs hero videos and old single-page layout.
+
 ## 2026-10-03 — Wider nav link spacing
 - Desktop gap between work / about / contact: 48px → 80px (still centred).
 

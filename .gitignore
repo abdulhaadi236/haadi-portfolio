@@ -7,3 +7,7 @@ out/
 
 # Raw source media (too large for git; web-optimised copies go in public/)
 Background Video/
+Pictures/
+Document/
+Icons/
+.claude/previews/

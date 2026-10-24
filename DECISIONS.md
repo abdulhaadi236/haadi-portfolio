@@ -2,6 +2,14 @@
 
 Record of choices and why, newest first.
 
+## 2026-10-23 — Redesign build
+- Figma Starter plan hit MCP limit after metadata + 2 screenshots. Layout taken from metadata (exact positions/sizes/text); colours sampled from screenshots (lime #CBFF63, slate #516E6F); font Montserrat (from screenshots).
+- Nav hover square centred under each link (Figma showed it near the end of "Work"); hover-only, per user description.
+- About bio split into paragraphs for readability (Figma has one text block).
+- 10-bit HEVC rendered blank in the in-app browser despite canPlayType "probably" → use 8-bit HEVC Main; no visible banding at CRF 18.
+- Work list blur disabled on touch screens (no hover there).
+- Separate routes instead of one scrolling page, matching the separate Figma frames.
+
 ## 2026-10-03 — Video quality vs size; nav sizing
 - User found 720p/CRF33 too blurry. Footage (dense particles) compresses poorly: 1080p needs ~30MB/20s for good quality.
   Chosen: 1080p HEVC CRF32 (28MB) / H.264 CRF30 (34MB); phones 720p HEVC CRF33 (14MB) / H.264 CRF30 (19MB). SSIM vs master ≈0.92–0.93 (old: 0.83).

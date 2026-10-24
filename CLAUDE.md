@@ -3,8 +3,8 @@
 Portfolio site for Abdul Haadi, visual artist.
 
 ## Stack
-- Next.js 14 (App Router), React 18, plain CSS (`app/globals.css`) — no Tailwind yet
-- Main files: `app/layout.js` (metadata), `app/page.js` (whole page, client component), `app/globals.css`
+- Next.js 14 (App Router), React 18, plain CSS (`app/globals.css`), Montserrat via next/font
+- Routes: `app/page.js` (home video), `app/about`, `app/work` (chooser), `app/work/visual-arts` (list, `WorkList.js`), `app/work/commercial`. Shared nav: `app/components/SiteNav.js`. Work data + YouTube links: `app/data/works.js`.
 
 ## Where things live
 - Local: `/Users/haadih/Desktop/Website`
