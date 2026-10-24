@@ -9,6 +9,7 @@
   --square: 30px;        /* lime marker square (work list, resume) */
   --nav-square: 25px;    /* lime hover square under nav links */
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 * {
@@ -99,15 +100,15 @@ img {
 }
 
 /* Centred under the link, straddling the bar's bottom edge with room below the text.
-   Rises 20px with a slow ease-in-out. */
+   A short 6px rise with a slight springy overshoot — quick and tactile. */
 .site-nav__link .hover-square {
   left: 50%;
   top: 44px;
   width: var(--nav-square);
   height: var(--nav-square);
   margin-left: calc(var(--nav-square) / -2);
-  transform: translateY(20px);
-  transition: opacity 0.5s var(--ease-in-out), transform 0.5s var(--ease-in-out);
+  transform: translateY(6px);
+  transition: opacity 0.18s ease-out, transform 0.32s var(--ease-spring);
 }
 
 .site-nav__link:hover .hover-square,
@@ -298,10 +299,12 @@ img {
 
 .work-list__deck {
   --step: 14px;          /* offset between stacked cards */
+  --pull: 170px;         /* a hovered card's top rises this far above the pile, whatever its depth */
   position: relative;
   display: block;
-  width: calc(564px + 12 * var(--step));
-  height: calc(372px + 12 * var(--step));
+  width: calc(564px + 11 * var(--step));
+  height: calc(372px + 11 * var(--step));
+  margin-top: var(--pull);   /* pile sits lower, leaving room to pull cards up */
   flex-shrink: 0;
 }
 
@@ -318,7 +321,14 @@ img {
     translate(calc(var(--depth) * var(--step)), calc(var(--depth) * var(--step)))
     scale(calc(1 - var(--depth) * 0.012));
   filter: blur(calc(min(var(--depth), 8) * 0.6px)) brightness(calc(1 - min(var(--depth), 8) * 0.04));
-  transition: transform 0.8s var(--ease-in-out), filter 0.8s var(--ease-in-out);
+  transition: transform 0.6s var(--ease-in-out), filter 0.6s var(--ease-in-out);
+}
+
+.work-list__card.is-pulled {
+  transform:
+    translate(calc(var(--depth) * var(--step)), calc(var(--pull) * -1))
+    scale(calc(1 - var(--depth) * 0.012));
+  filter: none;
 }
 
 .work-list__card img {

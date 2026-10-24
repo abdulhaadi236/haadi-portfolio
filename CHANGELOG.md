@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-10-24 — Review round 2 (partial)
+- Nav hover square: 6px rise with springy overshoot (0.32s), quick fade-in — more tactile.
+- Work deck: pile of discs — cards keep fixed slots in list order; hovering a title slides that card straight up out of the pile (top rises 170px above pile, lower part stays behind cards in front). Pile moved lower to make room.
+- Pending (need Figma frames): redesigned Work chooser, redesigned "in production" page, new Contact page.
+
 ## 2026-10-23 — Review round 1
 - Nav hover square: 25px, lower (more gap under text), rises 20px with 0.5s ease-in-out.
 - Nav glass: clear frosted bar on Home; white frosted glass on all other pages.
