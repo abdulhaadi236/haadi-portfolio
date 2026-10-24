@@ -2,16 +2,20 @@ import Link from 'next/link'
 
 export const metadata = { title: 'Work — Abdul Haadi' }
 
-// Work chooser (Figma: Work frame, node 14:65). Bars are the base colour;
-// on hover they turn to the lime gradient with a soft blur along the bottom.
+// Work chooser (Figma redesign, 2026-10-24): large stacked titles, each over a lime block.
 export default function Work() {
   return (
     <main className="page work-choice">
-      <Link href="/work/visual-arts" className="work-choice__bar">
-        <span>Visual Arts Work</span>
+      <Link href="/work/visual-arts" className="block-title work-choice__item work-choice__item--visual">
+        <i className="block-title__square" aria-hidden="true" />
+        <span>Visual</span>
+        <span>Arts</span>
+        <span>Work</span>
       </Link>
-      <Link href="/work/commercial" className="work-choice__bar">
-        <span>Commercial Work</span>
+      <Link href="/work/commercial" className="block-title work-choice__item work-choice__item--commercial">
+        <i className="block-title__square" aria-hidden="true" />
+        <span>Commercial</span>
+        <span>Work</span>
       </Link>
     </main>
   )

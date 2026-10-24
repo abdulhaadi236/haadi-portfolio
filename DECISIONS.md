@@ -2,6 +2,11 @@
 
 Record of choices and why, newest first.
 
+## 2026-10-24 — Block-title pages
+- Designs came as PNG exports pasted in chat (Figma MCP still rate-limited). Measured lime blocks/text by pixel scanning, scaled ×1.682.
+- Lime blocks always visible (Figma shows them static); added a small springy hover nudge on the Work chooser for feedback — confirm with user.
+- Large-block lime is #C0FF65 (slightly different from the nav/list lime #CBFF63) — kept both as sampled.
+
 ## 2026-10-23 — Redesign build
 - Figma Starter plan hit MCP limit after metadata + 2 screenshots. Layout taken from metadata (exact positions/sizes/text); colours sampled from screenshots (lime #CBFF63, slate #516E6F); font Montserrat (from screenshots).
 - Nav hover square centred under each link (Figma showed it near the end of "Work"); hover-only, per user description.

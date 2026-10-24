@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation'
 const LINKS = [
   { href: '/about', label: 'About' },
   { href: '/work', label: 'Work' },
-  { href: 'mailto:abdulhadi.tahir98@gmail.com', label: 'Contact' },
+  { href: '/contact', label: 'Contact' },
 ]
 
 // Top bar (Figma: Nav, 55px). On hover a lime square rises from below each link,

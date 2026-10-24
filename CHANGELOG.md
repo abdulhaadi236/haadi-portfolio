@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-10-24 — Redesigned Work chooser, In production, new Contact page
+- Work chooser: "Visual / Arts / Work" and "Commercial / Work" (Montserrat 50px) each over a 200×172 lime block (#C0FF65); block springs 6px up-left on hover. Replaces the slate gradient bars.
+- In production: "This page / is in / production" (54px medium) over a lime block.
+- Contact page `/contact`: Insta @fromhaadi (instagram.com/fromhaadi) + email, 28px medium, over a lime block. Nav "Contact" now links here instead of mailto.
+- Positions measured from the user's Figma exports (856px wide → scaled to 1440).
+
 ## 2026-10-24 — YouTube links
 - All 12 works linked to their YouTube videos (titles + thumbnails, open in new tab). Links matched by YouTube video title; user's list had 13 entries with "Circus 2" duplicated.
 - Pulled-up thumbnail stays up while the mouse travels onto it, so it can be clicked.
