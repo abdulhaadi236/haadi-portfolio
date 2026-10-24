@@ -5,7 +5,7 @@ import { works } from '../../data/works'
 
 // Work list (Figma: Work frame, node 14:37).
 // The hovered title is sharp with a lime square behind it; titles get progressively
-// blurrier the further they are from it. The thumbnail deck shows the hovered work on top.
+// blurrier the further they are from it. The thumbnail deck brings the hovered work to the front.
 export default function WorkList() {
   const [active, setActive] = useState(0)
   const n = works.length
@@ -32,29 +32,25 @@ export default function WorkList() {
         })}
       </ol>
 
-      <div className="work-list__deck" aria-hidden="true">
-        {/* Two cards peek out behind: the next works in the list */}
-        <div className="work-list__card work-list__card--back2">
-          <img src={`/images/work/${works[(active + 2) % n].slug}.jpg`} alt="" />
-        </div>
-        <div className="work-list__card work-list__card--back1">
-          <img src={`/images/work/${works[(active + 1) % n].slug}.jpg`} alt="" />
-        </div>
-        <a
-          className="work-list__card work-list__card--front"
-          {...(works[active].youtube ? { href: works[active].youtube, target: '_blank', rel: 'noopener noreferrer' } : {})}
-          tabIndex={-1}
-        >
-          {works.map((work, i) => (
-            <img
-              key={work.slug}
-              src={`/images/work/${work.slug}.jpg`}
-              alt=""
-              className={i === active ? 'is-active' : ''}
-            />
-          ))}
-        </a>
-      </div>
+      {/* All works stacked in list order, each in its own fixed slot behind the front;
+          deeper cards are smaller and blurrier. The hovered work glides to the front,
+          the previous one eases back to its slot — the order behind never changes. */}
+      <a
+        className="work-list__deck"
+        {...(works[active].youtube ? { href: works[active].youtube, target: '_blank', rel: 'noopener noreferrer' } : {})}
+        tabIndex={-1}
+        aria-hidden="true"
+      >
+        {works.map((work, i) => (
+          <div
+            key={work.slug}
+            className={`work-list__card${i === active ? ' is-active' : ''}`}
+            style={{ '--depth': i === active ? 0 : i + 1, zIndex: i === active ? n + 1 : n - i }}
+          >
+            <img src={`/images/work/${work.slug}.jpg`} alt="" />
+          </div>
+        ))}
+      </a>
     </div>
   )
 }

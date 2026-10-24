@@ -6,7 +6,9 @@
   --paper: #FFFFFF;
   --nav-h: 55px;
   --gutter: 88px;        /* Figma: logo at x=88, links end 88px from the right */
-  --square: 30px;        /* lime hover/marker square */
+  --square: 30px;        /* lime marker square (work list, resume) */
+  --nav-square: 25px;    /* lime hover square under nav links */
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
 }
 
 * {
@@ -59,13 +61,18 @@ img {
   align-items: center;
   justify-content: space-between;
   padding: 0 var(--gutter);
-  background: var(--paper);
+  /* White frosted glass over page content */
+  background: rgba(255, 255, 255, 0.6);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  backdrop-filter: blur(20px) saturate(160%);
   color: var(--ink);
   font-size: 18px;
 }
 
+/* Home: clear dark glass over the video */
 .site-nav--on-video {
-  background: transparent;
+  background: rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
   color: var(--paper);
 }
 
@@ -91,11 +98,16 @@ img {
   z-index: 1;
 }
 
-/* Centred under the link, half on the bar and half below it */
+/* Centred under the link, straddling the bar's bottom edge with room below the text.
+   Rises 20px with a slow ease-in-out. */
 .site-nav__link .hover-square {
   left: 50%;
-  bottom: calc(var(--square) / -2);
-  margin-left: calc(var(--square) / -2);
+  top: 44px;
+  width: var(--nav-square);
+  height: var(--nav-square);
+  margin-left: calc(var(--nav-square) / -2);
+  transform: translateY(20px);
+  transition: opacity 0.5s var(--ease-in-out), transform 0.5s var(--ease-in-out);
 }
 
 .site-nav__link:hover .hover-square,
@@ -168,7 +180,7 @@ img {
   position: relative;
   display: table;
   margin: 150px 0 0 auto;
-  font-size: 28px;
+  font-size: 20px;
 }
 
 .about__resume span {
@@ -285,50 +297,34 @@ img {
 }
 
 .work-list__deck {
+  --step: 14px;          /* offset between stacked cards */
   position: relative;
-  width: 613px;
-  height: 426px;
+  display: block;
+  width: calc(564px + 12 * var(--step));
+  height: calc(372px + 12 * var(--step));
   flex-shrink: 0;
 }
 
 .work-list__card {
   position: absolute;
+  left: 0;
+  top: 0;
   width: 564px;
   height: 372px;
   overflow: hidden;
   background: #eee;
+  transform-origin: top left;
+  transform:
+    translate(calc(var(--depth) * var(--step)), calc(var(--depth) * var(--step)))
+    scale(calc(1 - var(--depth) * 0.012));
+  filter: blur(calc(min(var(--depth), 8) * 0.6px)) brightness(calc(1 - min(var(--depth), 8) * 0.04));
+  transition: transform 0.8s var(--ease-in-out), filter 0.8s var(--ease-in-out);
 }
 
 .work-list__card img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-}
-
-.work-list__card--back2 {
-  left: 49px;
-  top: 54px;
-}
-
-.work-list__card--back1 {
-  left: 24px;
-  top: 29px;
-}
-
-.work-list__card--front {
-  left: 0;
-  top: 0;
-}
-
-.work-list__card--front img {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  transition: opacity 0.35s ease;
-}
-
-.work-list__card--front img.is-active {
-  opacity: 1;
 }
 
 /* ---------- In production (Figma: Work, node 17:63) ---------- */
@@ -379,7 +375,7 @@ img {
 
   .about__resume {
     margin-top: 64px;
-    font-size: 22px;
+    font-size: 18px;
   }
 
   .work-list__inner {

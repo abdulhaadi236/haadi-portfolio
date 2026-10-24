@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-10-23 — Review round 1
+- Nav hover square: 25px, lower (more gap under text), rises 20px with 0.5s ease-in-out.
+- Nav glass: clear frosted bar on Home; white frosted glass on all other pages.
+- Download Resume text 28px → 20px.
+- Work deck: all 12 thumbnails stacked in list order (fixed slots, smaller + blurrier with depth); hovered work glides to the front (0.8s ease-in-out), previous one returns to its slot.
+
 ## 2026-10-23 — Full redesign from Figma (branch `redesign`)
 - New pages: Home (`/`), About (`/about`), Work chooser (`/work`), Visual Arts list (`/work/visual-arts`), Commercial "in production" (`/work/commercial`). Contact = mailto link.
 - Shared nav (Figma "Nav", 55px, Montserrat): lime square rises from below on hover, half on / half below the bar.
