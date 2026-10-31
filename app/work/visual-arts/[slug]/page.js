@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import { works } from '../../../data/works'
 
-// One page per work (Figma: Youtube Embed frame): the video, its details, "About Work" and "Display".
+// One page per work (Figma: Youtube Embed frame): the video and its details.
 export function generateStaticParams() {
   return works.map((work) => ({ slug: work.slug }))
 }
@@ -45,28 +45,8 @@ export default function WorkPage({ params }) {
           </div>
         </dl>
 
-        <section className="work-detail__section">
-          <h1 className="work-detail__heading">About Work</h1>
-          {work.about.length > 0 ? (
-            work.about.map((para, i) => <p key={i}>{para}</p>)
-          ) : (
-            <p className="work-detail__placeholder">Text coming soon.</p>
-          )}
-        </section>
-
-        <section className="work-detail__section">
-          <h2 className="work-detail__heading">Display</h2>
-          <img
-            className="work-detail__display"
-            src={work.display || `/images/work/${work.slug}.jpg`}
-            {...(work.display ? {} : {
-              srcSet: `/images/work/sm/${work.slug}.jpg 1200w, /images/work/${work.slug}.jpg 1920w`,
-              sizes: '(max-width: 887px) 100vw, 855px',
-            })}
-            alt={`${work.title} — display`}
-            loading="lazy"
-          />
-        </section>
+        {/* "About Work" and "Display" sections (Figma) are hidden until their text and images
+            are supplied — fields are ready in app/data/works.js; styles in globals.css */}
       </div>
     </main>
   )

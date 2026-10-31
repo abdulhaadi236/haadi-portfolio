@@ -1,5 +1,8 @@
 # Changelog
 
+## 2026-10-31 — Work pages: video + details only
+- Hid "About Work" and "Display" sections on work pages for now (data fields and styles kept for when content arrives).
+
 ## 2026-10-31 — Work details
 - All 12 works: Medium "Animation", Duration "Loop".
 
