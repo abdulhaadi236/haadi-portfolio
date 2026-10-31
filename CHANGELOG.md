@@ -1,5 +1,8 @@
 # Changelog
 
+## 2026-10-31 — Scroll wheel refinements
+- Wheel smaller (33×96 → 25×72), further left (55px clear of the lime marker), feathered top and bottom (mask fade).
+
 ## 2026-10-31 — Scroll wheel: left side, animation 2
 - Wheel moved to the left of the titles (24px left of the lime marker), same height.
 - Switched to `Icons/Icon-Animation-2` (frames 00–11) → `public/images/ui/scroll-wheel-2.png` (792×192, 184 KB), shown 33×96. First animation kept as `scroll-wheel.png` (swap = CSS url/size + WHEEL_W 51).

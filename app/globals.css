@@ -384,15 +384,18 @@ a:focus-visible {
 }
 
 /* Scroll-wheel icon to the left of the titles, at the thumbnail's mid-height.
-   12-frame sprite (Icons/Icon-Animation-2), 33 × 96 per frame; JS steps background-position.
+   12-frame sprite (Icons/Icon-Animation-2), 25 × 72 per frame; JS steps background-position.
    (First animation: /images/ui/scroll-wheel.png, 51px frames, 612px strip.) */
 .work-list__wheel {
   position: absolute;
-  left: -72px;                        /* 24px left of the lime marker square */
-  top: calc((372px - 96px) / 2);
-  width: 33px;
-  height: 96px;
-  background: url('/images/ui/scroll-wheel-2.png') 0 0 / 396px 96px no-repeat;
+  left: -95px;                        /* 55px clear of the lime marker square */
+  top: calc((372px - 72px) / 2);
+  width: 25px;
+  height: 72px;
+  background: url('/images/ui/scroll-wheel-2.png') 0 0 / 300px 72px no-repeat;
+  /* Feathered top and bottom, like the wheel disappears into the surface */
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 30%, #000 70%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, #000 30%, #000 70%, transparent);
   cursor: grab;
   touch-action: none;
   user-select: none;
