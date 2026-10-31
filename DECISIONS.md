@@ -2,6 +2,9 @@
 
 Record of choices and why, newest first.
 
+## 2026-10-31 — Drum centred on thumbnail
+- User wanted the dial's top/bottom to match the thumbnail's. A cylinder only reaches both edges from the centre, so the middle row (and lime bar/square) moved from Figma's y=344 to the thumbnail centre y=325.
+
 ## 2026-10-31 — Dial interaction
 - Clicking a non-selected title turns the dial to it (doesn't open YouTube); only the title in the lime bar opens its video. Keyboard focus also turns the dial (mouse focus doesn't, to avoid double handling).
 - Wheel notch gives a 160ms stretch pulse of the square in the scroll direction, matching the drag states.

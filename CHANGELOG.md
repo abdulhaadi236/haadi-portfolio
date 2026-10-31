@@ -1,5 +1,8 @@
 # Changelog
 
+## 2026-10-31 — Bigger drum, matched to thumbnail
+- Drum radius 170 → 236.8px (8° per title) so, in perspective, its top/bottom edges land on the thumbnail's top/bottom (verified: 133–138 vs 137, 511–516 vs 512). Middle row, lime bar and square moved up 19.5px to the thumbnail's vertical centre (y=325).
+
 ## 2026-10-31 — 3D drum dial
 - Titles now sit on a CSS 3D cylinder (radius 170px, 11° apart, perspective 900px from the titles' left edge): the selected title faces forward in the middle row; others tilt away and foreshorten towards the top/bottom; titles round the back are hidden. Turning rotates every title along the curve (0.18s snap). Near-middle spacing ≈ Figma's 33px. Blur + slight fade by distance kept.
 

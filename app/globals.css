@@ -299,8 +299,9 @@ a:focus-visible {
 
 /* ---------- Work list: dial (Figma: Work, node 14:37) ----------
    Titles at x=292 from y=137, ~33px apart, in a dial exactly the thumbnail's height (375px).
-   The selected title sits in the middle row (centre 207px down the dial) over a lime bar
-   (x=261, 247 × 30); the lime square (x=213, 30 × 30) is the drag handle.
+   The selected title sits in the middle row over a lime bar (x=261, 247 × 30); the lime square
+   (x=213, 30 × 30) is the drag handle. Middle row is centred on the thumbnail (Figma had it 19.5px
+   lower) so the drum can span the thumbnail's full height.
    Thumbnail 568 × 375 at x=580. */
 .work-list__inner {
   position: relative;
@@ -324,14 +325,16 @@ a:focus-visible {
   mask-image: linear-gradient(to bottom, transparent, #000 48px, #000 calc(100% - 48px), transparent);
 }
 
-/* The drum: titles are placed round a horizontal cylinder (radius --r, --step degrees apart).
+/* The drum: titles are placed round a horizontal cylinder (radius --r, --step degrees apart),
+   centred on the thumbnail's middle (187.5px down). Seen in perspective, the cylinder's top and
+   bottom edges land exactly on the thumbnail's top and bottom: R·p/(p+R) = 187.5 → R ≈ 237px.
    R·sin(step) ≈ 33px, so titles near the middle keep Figma's spacing; further out they foreshorten
-   and crowd together like a real dial. The cylinder's front is in the middle row (207px down). */
+   and crowd together like a real dial. */
 .work-list__dial {
-  --r: 170px;
-  --step: 11deg;
+  --r: 236.8px;
+  --step: 8deg;
   perspective: 900px;
-  perspective-origin: 24px 207px;   /* viewed from the titles' left edge, so they stay left-aligned */
+  perspective-origin: 24px 187.5px;   /* viewed from the titles' left edge, so they stay left-aligned */
 }
 
 .work-list__titles {
@@ -346,7 +349,7 @@ a:focus-visible {
   position: absolute;
   left: 0;
   right: 0;
-  top: calc(207px - 16.5px);
+  top: calc(187.5px - 16.5px);
   height: 33px;
   display: flex;
   align-items: center;
@@ -370,7 +373,7 @@ a:focus-visible {
 .work-list__bar {
   position: absolute;
   left: -31px;
-  top: 192px;
+  top: 172.5px;
   width: 247px;
   height: 30px;
   background: var(--lime);
@@ -381,7 +384,7 @@ a:focus-visible {
 .work-list__knob {
   position: absolute;
   left: -79px;
-  top: 192px;
+  top: 172.5px;
   width: 30px;
   height: 30px;
   background: var(--lime);
@@ -397,7 +400,7 @@ a:focus-visible {
 }
 
 .work-list__knob.is-up {
-  top: calc(192px - 27px);
+  top: calc(172.5px - 27px);
   height: 57px;
 }
 
