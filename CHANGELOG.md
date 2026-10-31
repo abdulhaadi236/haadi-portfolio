@@ -1,5 +1,8 @@
 # Changelog
 
+## 2026-10-31 — White nav links on Visual Arts
+- Visual Arts (computers): About/Contact nav links are white over the image (glow removed); logo stays black over the white left side; active word stays black on lime. Other pages unchanged.
+
 ## 2026-10-31 — Glass back on Visual Arts
 - Reverted "image starts below the nav" (it made the nav look like a white bar). Image runs under the glass again; nav words get a soft white glow on that page (computers) for readability over the dark image.
 
