@@ -298,8 +298,7 @@ a:focus-visible {
 }
 
 /* ---------- Work list (Figma: Work, node 14:37) ----------
-   Titles at x=306 from y=144, 65px apart; thumbnail deck 564 × 372 at x=584,
-   two cards behind offset by ~25px each. */
+   Titles at x=306 from y=144, 65px apart; thumbnail frame 564 × 372 at x=584. */
 .work-list__inner {
   display: flex;
   gap: 0;
@@ -339,88 +338,39 @@ a:focus-visible {
   transition: top 0.3s ease;
 }
 
-.work-list__deck {
-  --step: 10px;          /* offset between stacked cards */
-  /* Card size follows the screen height so the whole pile (plus a lifted card) fits on
-     shorter laptop screens; 564 × 372 (Figma) on tall screens. */
-  --card-h: clamp(240px, calc((100vh - 290px) / 1.86), 372px);
-  --card-w: calc(var(--card-h) * 1.516);
-  --pull: calc(var(--card-h) * 0.86);   /* lifted card rises ~86% out of the pile */
-  position: relative;
+.work-list__frame {
+  position: sticky;            /* stays in view while hovering titles further down */
+  top: calc(var(--nav-h) + 89px);
+  align-self: flex-start;
   display: block;
-  width: calc(var(--card-w) + 11 * var(--step));
-  height: calc(var(--card-h) + 11 * var(--step));
-  margin-top: var(--pull);   /* pile sits lower, leaving room to pull cards up */
+  width: 564px;
+  height: 372px;
   flex-shrink: 0;
-}
-
-.work-list__card {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: var(--card-w);
-  height: var(--card-h);
   overflow: hidden;
   background: #eee;
-  transform-origin: top left;
-  transform:
-    translate(calc(var(--depth) * var(--step)), calc(var(--depth) * var(--step)))
-    scale(calc(1 - var(--depth) * 0.012));
-  filter: blur(calc(min(var(--depth), 8) * 0.6px)) brightness(calc(1 - min(var(--depth), 8) * 0.04));
-  transition: transform 0.6s var(--ease-in-out), filter 0.6s var(--ease-in-out);
 }
 
-.work-list__card.is-pulled {
-  transform:
-    translate(calc(var(--depth) * var(--step)), calc(var(--pull) * -1));
-  filter: none;   /* full size and sharp once lifted, whatever its depth */
-}
-
-.work-list__card img {
+.work-list__frame img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.6s var(--ease-in-out);
 }
 
-/* ---------- In production ---------- */
-.in-production {
-  font-size: 54px;
-  font-weight: 500;
-  line-height: 66px;
+.work-list__frame img.is-active {
+  opacity: 1;
 }
 
-.in-production .block-title__square {
-  left: 81px;
-  top: 75px;
-}
-
-/* ---------- Contact — 24px lines, 64px apart; block behind the left of both lines ---------- */
-.contact {
-  font-size: 28px;
-  font-weight: 500;
-  line-height: 34px;
-  gap: 30px;
-  margin-top: -76px;   /* Figma centres the block, not the text */
-}
-
-.contact .block-title__square {
-  left: 32px;
-  top: -28px;
-}
-
-.contact a:hover {
-  text-decoration: underline;
-  text-underline-offset: 4px;
-}
-
-/* ---------- Narrow screens ---------- */
-/* Per-title thumbnail — only shown when the deck is hidden (narrower screens) */
+/* Per-title thumbnail — only shown when the frame is hidden (narrower screens) */
 .work-list__thumb {
   display: none;
 }
 
 @media (max-width: 1100px) {
-  .work-list__deck {
+  .work-list__frame {
     display: none;
   }
 

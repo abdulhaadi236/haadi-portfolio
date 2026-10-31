@@ -1,5 +1,8 @@
 # Changelog
 
+## 2026-10-31 — Single cross-fading thumbnail
+- Visual Arts list: replaced the 12-card pile with one 564×372 frame on the right (Figma position). Hovering a title cross-fades it (0.6s ease-in-out) to that work's thumbnail; frame is sticky while scrolling and links to the active work's video. Pile version preserved at tag `v12-new-thumbnails`.
+
 ## 2026-10-31 — New work thumbnails
 - Re-processed thumbnails from `Pictures/Work-Thumbnails/` (10 replaced by the user; all now 1920×1080 sources → 1200px JPEG). Circus 3 taken from new `Circus 3.png.jpg`.
 - `netlify.toml`: media cache shortened from 1 week to 1 hour + background revalidation, so replaced files with the same name appear quickly.

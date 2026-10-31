@@ -2,6 +2,9 @@
 
 Record of choices and why, newest first.
 
+## 2026-10-31 — Thumbnail interaction
+- User preferred a single thumbnail with cross-fade over the pull-up pile. Tag `v12-new-thumbnails` has the pile if wanted again.
+
 ## 2026-10-24 — Block-title pages
 - Designs came as PNG exports pasted in chat (Figma MCP still rate-limited). Measured lime blocks/text by pixel scanning, scaled ×1.682.
 - Lime blocks always visible (Figma shows them static); added a small springy hover nudge on the Work chooser for feedback — confirm with user.
