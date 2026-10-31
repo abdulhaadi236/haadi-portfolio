@@ -311,10 +311,17 @@ a:focus-visible {
 .work-list__dial {
   position: relative;
   z-index: 1;                 /* titles above the lime bar */
-  width: 288px;
+  /* 288px column plus 24px each side so blurred text isn't sliced at the edges;
+     the negative margins keep titles and thumbnail exactly where Figma has them */
+  width: calc(288px + 48px);
+  margin: 0 -24px;
+  padding: 0 24px;
   height: 375px;
   flex-shrink: 0;
   overflow: hidden;
+  /* Titles fade out towards the top and bottom instead of being cut off */
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 48px, #000 calc(100% - 48px), transparent);
+  mask-image: linear-gradient(to bottom, transparent, #000 48px, #000 calc(100% - 48px), transparent);
 }
 
 .work-list__titles {
@@ -429,7 +436,11 @@ a:focus-visible {
   .work-list__dial {
     width: min(564px, 100%);
     height: auto;
+    margin: 0;
+    padding: 0;
     overflow: visible;
+    -webkit-mask-image: none;
+    mask-image: none;
     min-width: 0;   /* don't let 1200px thumbnails widen the column */
   }
 

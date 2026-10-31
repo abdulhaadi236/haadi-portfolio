@@ -1,5 +1,8 @@
 # Changelog
 
+## 2026-10-31 — Dial: no visible box edges
+- Dial column got 24px of room each side (negative margins keep positions exact) so blur isn't clipped, and a 48px fade at top/bottom instead of a hard cut.
+
 ## 2026-10-31 — Work list as a dial (Figma redesign)
 - Visual Arts list rebuilt from Figma frame 14:37: titles 16px, 33px apart, in a 375px dial (thumbnail height). Selected title fixed in the middle row over a lime bar (x=261, 247×30), others blur by distance (0/1/1.5/2/3/3.5/4/5px). Thumbnail 568×375 at x=580. Positions verified pixel-exact.
 - Removed the 12-frame scroll-wheel animation (sprites deleted). Replaced by the lime square drag handle (x=213, 30×30) with Figma "Scroll" frame states: 30×57 dragging up (grows upward), 30×59 dragging down, springs back on release; short stretch pulse per wheel notch.
