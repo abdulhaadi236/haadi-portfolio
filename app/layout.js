@@ -31,14 +31,8 @@ export const metadata = {
 }
 
 export const viewport = {
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
-    { media: '(prefers-color-scheme: dark)', color: '#181818' },
-  ],
+  themeColor: '#ffffff',
 }
-
-// Applies a saved light/dark choice before the first paint, so the page never flashes the wrong theme
-const themeScript = `try{var t=localStorage.getItem('theme');if(t==='dark'||t==='light')document.documentElement.dataset.theme=t}catch(e){}`
 
 // Tells search engines who the site is about (name, role, official profiles)
 const person = {
@@ -54,10 +48,7 @@ const person = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
-      </head>
+    <html lang="en">
       <body className={montserrat.className}>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(person) }} />
         <SiteNav />

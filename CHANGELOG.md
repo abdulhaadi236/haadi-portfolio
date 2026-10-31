@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-10-31 — One glass nav; dark mode removed
+- Nav uses the same clear frosted glass on every page (rgba(255,255,255,.08) + blur + faint bottom line); only text colour adapts (white over Home video / phone images, black elsewhere).
+- Removed dark mode entirely (tokens, nav switch, no-flash script, dark theme-color). Site is light only, regardless of device setting.
+- Visual Arts (computers): background image starts below the nav so nav text always sits on white.
+
 ## 2026-10-31 — Sharper work images
 - Work thumbnails now use the user's 1920×1080 originals unchanged (`public/images/work/<slug>.jpg`) instead of 1200px q82 re-encodes, which looked soft at full-screen size. Phones get 1200px q90 copies (`public/images/work/sm/`) via srcset; the browser picks per screen.
 - Visual Arts background only loads the selected work ±2 (and keeps loaded ones) instead of all 12 originals up front.

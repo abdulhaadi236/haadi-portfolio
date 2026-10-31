@@ -1,13 +1,10 @@
-/* Design tokens — sampled from the Figma frames (Figma file J4gQYhBJRVQoV37zq005mt).
-   Light theme by default; dark theme (Figma "Black-Version" frames) follows the visitor's device
-   setting unless they pick one with the nav switch (stored as <html data-theme="light|dark">). */
+/* Design tokens — sampled from the Figma frames (Figma file J4gQYhBJRVQoV37zq005mt) */
 :root {
-  --lime: #C0FF65;         /* the one accent colour — lime in light, blue in dark (name kept for history) */
+  --lime: #C0FF65;         /* the one accent colour */
   --on-accent: #000000;    /* text sitting on the accent */
   --slate: #516E6F;
   --ink: #000000;
   --paper: #FFFFFF;
-  --nav-glass: rgba(247, 247, 247, 0.7);   /* Figma Nav fill */
   --nav-h: 55px;
   --gutter: 88px;        /* Figma: logo at x=88, links end 88px from the right */
   --square: 30px;        /* lime marker square (work list, resume) */
@@ -15,28 +12,6 @@
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
-  color-scheme: light;
-}
-
-/* Dark theme (Figma: About-Black-Version, Work-Black-Version) */
-:root[data-theme='dark'] {
-  --lime: #0014F9;
-  --on-accent: #FFFFFF;
-  --ink: #FFFFFF;
-  --paper: #181818;
-  --nav-glass: rgba(160, 160, 160, 0.65);   /* reads as Figma's #717171 bar over #181818 */
-  color-scheme: dark;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) {
-    --lime: #0014F9;
-    --on-accent: #FFFFFF;
-    --ink: #FFFFFF;
-    --paper: #181818;
-    --nav-glass: rgba(160, 160, 160, 0.65);
-    color-scheme: dark;
-  }
 }
 
 * {
@@ -115,8 +90,9 @@ a:focus-visible {
   align-items: center;
   justify-content: space-between;
   padding: 0 var(--gutter);
-  /* Frosted glass over page content (Figma Nav fill) */
-  background: var(--nav-glass);
+  /* The same clear frosted glass on every page; only the text colour adapts to what's behind */
+  background: rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(128, 128, 128, 0.14);
   -webkit-backdrop-filter: blur(20px) saturate(160%);
   backdrop-filter: blur(20px) saturate(160%);
   color: var(--ink);
@@ -124,10 +100,9 @@ a:focus-visible {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Over full-screen imagery (Home video; Visual Arts on phones): clear glass, white text */
+/* Over full-screen imagery (Home video; Visual Arts on phones): white text */
 .site-nav--on-video {
-  background: rgba(255, 255, 255, 0.08);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  border-bottom-color: rgba(255, 255, 255, 0.12);
   color: #FFFFFF;
 }
 
@@ -208,28 +183,6 @@ a:focus-visible {
 .site-nav__link.is-active span {
   transform: none;
   color: var(--on-accent);
-}
-
-/* Light/dark switch: a small circle, half filled */
-.theme-toggle {
-  width: 18px;
-  height: 18px;
-  padding: 0;
-  border: 1.5px solid currentColor;
-  border-radius: 50%;
-  background: linear-gradient(90deg, currentColor 50%, transparent 50%);
-  color: inherit;
-  cursor: pointer;
-  transition: transform 0.5s var(--ease-out);
-}
-
-.theme-toggle:hover {
-  transform: rotate(180deg);
-}
-
-.theme-toggle:focus-visible {
-  outline: 2px solid currentColor;
-  outline-offset: 4px;
 }
 
 /* ---------- Home ---------- */
@@ -547,7 +500,7 @@ a:focus-visible {
 }
 
 .work-list__title[aria-current] {
-  color: var(--on-accent);               /* black on lime (light) / white on blue (dark) */
+  color: var(--on-accent);               /* black on the lime bar */
 }
 
 .work-list__bar {
@@ -600,6 +553,13 @@ a:focus-visible {
   mask-image: linear-gradient(90deg, transparent 12%, rgba(0, 0, 0, 0.55) 50%, #000 92%);
 }
 
+/* Computers: the image starts below the nav, so the nav's black text always sits on white */
+@media (min-width: 1101px) {
+  .work-list__frame {
+    top: var(--nav-h);
+  }
+}
+
 /* Phones and tablets: full image, darkened (most on the left) so white titles stay readable */
 @media (max-width: 1100px) {
   .work-list__frame {
@@ -619,10 +579,9 @@ a:focus-visible {
     color: #FFFFFF;
   }
 
-  /* Nav over the full-screen image: clear glass, white text (as on Home) */
+  /* Nav over the full-screen image: white text (as on Home) */
   .site-nav--on-image {
-    background: rgba(255, 255, 255, 0.08);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    border-bottom-color: rgba(255, 255, 255, 0.12);
     color: #FFFFFF;
   }
 }
@@ -660,10 +619,6 @@ a:focus-visible {
 
   .site-nav__links {
     gap: 24px;
-  }
-
-  .site-nav__right {
-    gap: 20px;
   }
 
   .about__inner {

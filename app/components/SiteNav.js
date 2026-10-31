@@ -12,7 +12,7 @@ const LINKS = [
 
 // Top bar (Figma: Nav, 55px). Each link has an accent mark (Figma nav concept): on hover a small
 // bar rises into the bottom of the nav and the word lifts; on click the bar shoots up to the full
-// height; on the current page it widens to cover the word. Plus a light/dark switch.
+// height; on the current page it widens to cover the word.
 export default function SiteNav() {
   const pathname = usePathname()
   const [pressing, setPressing] = useState(null)
@@ -45,38 +45,7 @@ export default function SiteNav() {
             )
           })}
         </div>
-        <ThemeToggle />
       </div>
     </nav>
-  )
-}
-
-// Switches between light and dark. Starts from the device setting; the choice is remembered.
-// (The saved choice is applied before the page paints by the script in app/layout.js.)
-function ThemeToggle() {
-  const [theme, setTheme] = useState(null)
-
-  useEffect(() => {
-    const saved = document.documentElement.dataset.theme
-    setTheme(saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'))
-  }, [])
-
-  const toggle = () => {
-    const next = theme === 'dark' ? 'light' : 'dark'
-    document.documentElement.dataset.theme = next
-    try {
-      localStorage.setItem('theme', next)
-    } catch {}
-    setTheme(next)
-  }
-
-  return (
-    <button
-      type="button"
-      className="theme-toggle"
-      onClick={toggle}
-      aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
-      title={theme === 'dark' ? 'Light mode' : 'Dark mode'}
-    />
   )
 }

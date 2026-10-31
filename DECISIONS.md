@@ -2,6 +2,9 @@
 
 Record of choices and why, newest first.
 
+## 2026-10-31 — Light only
+- User removed the dark version and asked for the Home-style glass nav everywhere. Dark tokens are in git history (tag `v26-sharp-images`) if wanted again.
+
 ## 2026-10-31 — Image quality
 - Full-screen use needs the full 1920px sources; re-encoding JPEGs only loses quality, so originals are copied as-is. Larger sources (e.g. 2880px+) would be needed for perfectly crisp Retina full-screen.
 
