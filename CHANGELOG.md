@@ -1,5 +1,8 @@
 # Changelog
 
+## 2026-10-31 — 3D drum dial
+- Titles now sit on a CSS 3D cylinder (radius 170px, 11° apart, perspective 900px from the titles' left edge): the selected title faces forward in the middle row; others tilt away and foreshorten towards the top/bottom; titles round the back are hidden. Turning rotates every title along the curve (0.18s snap). Near-middle spacing ≈ Figma's 33px. Blur + slight fade by distance kept.
+
 ## 2026-10-31 — Dial: no visible box edges
 - Dial column got 24px of room each side (negative margins keep positions exact) so blur isn't clipped, and a 48px fade at top/bottom instead of a hard cut.
 

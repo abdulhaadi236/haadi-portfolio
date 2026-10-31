@@ -12,8 +12,8 @@ const PULSE_MS = 160    // how long the square stays stretched after a wheel not
 const BLUR = [0, 1, 1.5, 2, 3, 3.5, 4, 5]
 
 // Work list as a dial (Figma: Work frame, node 14:37).
-// The selected title sits in the middle row, sharp, over a lime bar; the others roll past above
-// and below, blurring with distance. Turn the dial with the mouse wheel/trackpad (one title per
+// The titles sit on a turning drum: the selected title faces the viewer in the middle row, sharp,
+// over a lime bar; the others tilt away round the curve above and below, blurring with distance. Turn the dial with the mouse wheel/trackpad (one title per
 // notch, with a tick), by dragging the lime square up/down, or by clicking a title. The square
 // stretches while dragging (Figma "Scroll" frame: 30×30 → 30×57 up / 30×59 down).
 // Clicking the title in the bar, or the thumbnail, opens that work's video.
@@ -144,7 +144,14 @@ export default function WorkList() {
       <div className="work-list__dial">
         <ol className="work-list__titles" style={{ '--active': active }}>
           {works.map((work, i) => (
-            <li key={work.slug} style={{ '--blur': `${BLUR[Math.min(Math.abs(i - active), BLUR.length - 1)]}px` }}>
+            <li
+              key={work.slug}
+              style={{
+                '--offset': i - active,                 // rows from the middle (− above, + below)
+                '--dist': Math.abs(i - active),
+                '--blur': `${BLUR[Math.min(Math.abs(i - active), BLUR.length - 1)]}px`,
+              }}
+            >
               <a className="work-list__thumb-link" href={work.youtube} target="_blank" rel="noopener noreferrer" tabIndex={-1} aria-hidden="true">
                 <img className="work-list__thumb" src={`/images/work/${work.slug}.jpg`} alt="" loading="lazy" />
               </a>

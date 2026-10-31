@@ -324,19 +324,41 @@ a:focus-visible {
   mask-image: linear-gradient(to bottom, transparent, #000 48px, #000 calc(100% - 48px), transparent);
 }
 
+/* The drum: titles are placed round a horizontal cylinder (radius --r, --step degrees apart).
+   R·sin(step) ≈ 33px, so titles near the middle keep Figma's spacing; further out they foreshorten
+   and crowd together like a real dial. The cylinder's front is in the middle row (207px down). */
+.work-list__dial {
+  --r: 170px;
+  --step: 11deg;
+  perspective: 900px;
+  perspective-origin: 24px 207px;   /* viewed from the titles' left edge, so they stay left-aligned */
+}
+
 .work-list__titles {
   list-style: none;
-  /* Middle row centre is 207px down; each title is 33px tall */
-  transform: translateY(calc(207px - 16.5px - var(--active) * 33px));
-  transition: transform 0.16s cubic-bezier(0.2, 0.9, 0.3, 1);   /* quick click into place */
+  position: relative;
+  height: 100%;
+  transform-style: preserve-3d;
+  transform: translateZ(calc(var(--r) * -1));   /* push the drum back so the front title is full size */
 }
 
 .work-list__titles li {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(207px - 16.5px);
   height: 33px;
   display: flex;
   align-items: center;
+  transform: rotateX(calc(var(--offset) * var(--step) * -1)) translateZ(var(--r));
+  backface-visibility: hidden;                 /* titles round the back of the drum disappear */
+  -webkit-backface-visibility: hidden;
   filter: blur(var(--blur));
-  transition: filter 0.2s ease;
+  opacity: calc(1 - var(--dist) * 0.06);
+  transition:
+    transform 0.18s cubic-bezier(0.2, 0.9, 0.3, 1),   /* quick click into place */
+    filter 0.2s ease,
+    opacity 0.2s ease;
 }
 
 .work-list__title {
@@ -445,6 +467,7 @@ a:focus-visible {
   }
 
   .work-list__titles {
+    height: auto;
     transform: none;
   }
 
@@ -467,10 +490,13 @@ a:focus-visible {
   }
 
   .work-list__titles li {
+    position: static;
     height: auto;
     display: block;
     margin-bottom: 40px;
+    transform: none;
     filter: none;
+    opacity: 1;
   }
 
   .work-list__thumb {
