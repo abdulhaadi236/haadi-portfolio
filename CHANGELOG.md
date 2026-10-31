@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-10-31 — Gear-step title scrolling + tick sound
+- Desktop Visual Arts: page no longer scrolls; the titles column scrolls on its own in 65px steps (one title per mouse-wheel notch; trackpad: every 40px of movement), each step snapping in 140ms with a synthesised "tick" (Web Audio, `app/work/visual-arts/tick.js`, no audio file). Title under the pointer becomes active, so the thumbnail follows. Every title can reach the top (spacer); titles fade at top/bottom edges.
+- Whole title row is hoverable (was text only).
+- Thumbnail frame moved 60px right (x=644) and is no longer sticky (page doesn't scroll).
+- Sound only plays after the visitor has clicked somewhere on the site (browser rule) — arriving via the Work page link counts.
+
 ## 2026-10-31 — Single cross-fading thumbnail
 - Visual Arts list: replaced the 12-card pile with one 564×372 frame on the right (Figma position). Hovering a title cross-fades it (0.6s ease-in-out) to that work's thumbnail; frame is sticky while scrolling and links to the active work's video. Pile version preserved at tag `v12-new-thumbnails`.
 

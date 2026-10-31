@@ -298,17 +298,61 @@ a:focus-visible {
 }
 
 /* ---------- Work list (Figma: Work, node 14:37) ----------
-   Titles at x=306 from y=144, 65px apart; thumbnail frame 564 × 372 at x=584. */
+   Titles at x=306 from y=144, 65px apart; thumbnail frame 564 × 372 at x=644 (Figma 584, +60). */
 .work-list__inner {
   display: flex;
   gap: 0;
-  margin: 89px 0 64px max(16px, calc(50% - 414px));
+  margin: 89px 0 0 max(16px, calc(50% - 414px));
+}
+
+/* Desktop: the page doesn't scroll — the titles column does, one title per notch */
+@media (min-width: 1101px) {
+  .work-list {
+    height: 100vh;
+    height: 100svh;
+    overflow: hidden;
+  }
+
+  .work-list__inner {
+    height: calc(100% - 89px);
+  }
+
+  .work-list__titles {
+    height: 100%;
+    overflow-y: auto;
+    scrollbar-width: none;
+    /* Room for the lime square, which sits 15px left of the titles (a scrolling box clips overflow) */
+    padding-left: 15px;
+    margin-left: -15px;
+    padding-top: 24px;          /* first title starts below the top fade… */
+    margin-top: -24px;          /* …while staying at Figma's y=144 */
+    box-sizing: content-box;
+    /* Titles fade out at the top and bottom edges as they scroll */
+    -webkit-mask-image: linear-gradient(to bottom, transparent, #000 24px, #000 calc(100% - 120px), transparent);
+    mask-image: linear-gradient(to bottom, transparent, #000 24px, #000 calc(100% - 120px), transparent);
+  }
+
+  .work-list__titles .work-list__square {
+    left: 0;   /* inside the 15px padding instead of hanging outside */
+    top: calc(24px + var(--active) * 65px - 5px);   /* + the list's top padding */
+  }
+
+  .work-list__titles::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Spacer so every title, even the last, can scroll up to the top row */
+  .work-list__titles::after {
+    content: '';
+    display: block;
+    height: calc(100% - 65px);
+  }
 }
 
 .work-list__titles {
   position: relative;
   list-style: none;
-  width: 278px;
+  width: 338px;           /* Figma 278px + 60px: thumbnail sits a little further right */
   flex-shrink: 0;
 }
 
@@ -339,8 +383,7 @@ a:focus-visible {
 }
 
 .work-list__frame {
-  position: sticky;            /* stays in view while hovering titles further down */
-  top: calc(var(--nav-h) + 89px);
+  position: relative;
   align-self: flex-start;
   display: block;
   width: 564px;
