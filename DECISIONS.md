@@ -2,6 +2,9 @@
 
 Record of choices and why, newest first.
 
+## 2026-10-31 — Image quality
+- Full-screen use needs the full 1920px sources; re-encoding JPEGs only loses quality, so originals are copied as-is. Larger sources (e.g. 2880px+) would be needed for perfectly crisp Retina full-screen.
+
 ## 2026-10-31 — Dark mode & nav
 - Figma has no theme switch; added a minimal half-filled circle after Contact. Default = device setting.
 - Accent variable keeps the name `--lime` but is blue in dark mode; `--on-accent` gives readable text on it (black on lime, white on blue).

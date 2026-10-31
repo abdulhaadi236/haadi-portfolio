@@ -59,6 +59,10 @@ export default function WorkPage({ params }) {
           <img
             className="work-detail__display"
             src={work.display || `/images/work/${work.slug}.jpg`}
+            {...(work.display ? {} : {
+              srcSet: `/images/work/sm/${work.slug}.jpg 1200w, /images/work/${work.slug}.jpg 1920w`,
+              sizes: '(max-width: 887px) 100vw, 855px',
+            })}
             alt={`${work.title} — display`}
             loading="lazy"
           />

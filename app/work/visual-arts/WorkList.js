@@ -39,6 +39,17 @@ export default function WorkList() {
   const shownActive = useRef(0)
   useEffect(() => { shownActive.current = active }, [active])
 
+  // Background images are full-size originals, so only load the selected work and its
+  // neighbours (and keep whatever has loaded) instead of all 12 at once
+  const [nearby, setNearby] = useState(() => new Set([N - 2, N - 1, 0, 1, 2]))
+  useEffect(() => {
+    setNearby((prev) => {
+      const next = new Set(prev)
+      for (let d = -2; d <= 2; d++) next.add((((active + d) % N) + N) % N)
+      return next.size === prev.size ? prev : next
+    })
+  }, [active])
+
   const select = (i) => {
     const next = ((i % N) + N) % N     // endless: wraps past either end
     if (next === activeRef.current) return false
@@ -207,14 +218,18 @@ export default function WorkList() {
 
       {/* Thumbnail of the selected work (full-screen background on phones); images cross-fade. */}
       <div className="work-list__frame" aria-hidden="true">
-        {works.map((work, i) => (
-          <img
-            key={work.slug}
-            src={`/images/work/${work.slug}.jpg`}
-            alt=""
-            className={i === active ? 'is-active' : ''}
-          />
-        ))}
+        {works.map((work, i) =>
+          nearby.has(i) ? (
+            <img
+              key={work.slug}
+              src={`/images/work/${work.slug}.jpg`}
+              srcSet={`/images/work/sm/${work.slug}.jpg 1200w, /images/work/${work.slug}.jpg 1920w`}
+              sizes="100vw"
+              alt=""
+              className={i === active ? 'is-active' : ''}
+            />
+          ) : null
+        )}
       </div>
     </div>
   )

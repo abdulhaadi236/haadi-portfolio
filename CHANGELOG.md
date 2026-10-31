@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-10-31 — Sharper work images
+- Work thumbnails now use the user's 1920×1080 originals unchanged (`public/images/work/<slug>.jpg`) instead of 1200px q82 re-encodes, which looked soft at full-screen size. Phones get 1200px q90 copies (`public/images/work/sm/`) via srcset; the browser picks per screen.
+- Visual Arts background only loads the selected work ±2 (and keeps loaded ones) instead of all 12 originals up front.
+- Work page Display image uses the same srcset.
+
 ## 2026-10-31 — Nav animation, dark mode, work pages, looping dial
 - Nav (Figma nav concept): each link has an accent mark — hover: 30×12 bar rises into the bottom of the nav and the word lifts 3px; click: bar shoots to full height; current page: widens to cover the word (text in --on-accent). Replaces the old half-outside square and the text-stroke current-page marker. Nav glass now Figma's rgba(247,247,247,.7).
 - Dark mode (Figma Black-Version frames): #181818 background, white text, grey glass nav, blue accent #0014F9 replacing lime everywhere. Follows the device setting; small half-filled-circle switch in the nav remembers the choice (localStorage, applied before first paint — no flash).
