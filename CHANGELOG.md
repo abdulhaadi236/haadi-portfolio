@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-10-31 — New work thumbnails
+- Re-processed thumbnails from `Pictures/Work-Thumbnails/` (10 replaced by the user; all now 1920×1080 sources → 1200px JPEG). Circus 3 taken from new `Circus 3.png.jpg`.
+- `netlify.toml`: media cache shortened from 1 week to 1 hour + background revalidation, so replaced files with the same name appear quickly.
+
 ## 2026-10-31 — Bio date
 - About: replaced "returns to Twelve Gates Arts … in November 2026" with a timeless line listing Twelve Gates Arts alongside the other venues. Icons folder confirmed not needed (unused, gitignored).
 
