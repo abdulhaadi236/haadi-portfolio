@@ -9,8 +9,8 @@ const STEP_DELTA = 40   // trackpad distance that counts as one notch
 const NOTCH = 50        // a single wheel event this big is a mouse-wheel notch → exactly one step
 const SNAP_MS = 140     // quick snap per notch — tactile, not smooth
 const DRAG_STEP = 24    // px of dragging the scroll wheel that counts as one step
-const WHEEL_FRAMES = 12 // frames in the scroll-wheel sprite (public/images/ui/scroll-wheel.png)
-const WHEEL_W = 51      // displayed width of one frame
+const WHEEL_FRAMES = 12 // frames in the scroll-wheel sprite (public/images/ui/scroll-wheel-2.png)
+const WHEEL_W = 33      // displayed width of one frame (51 for the first animation, scroll-wheel.png)
 const FRAME_MS = 16     // per frame → one full turn ≈ 0.2s
 
 // Work list (Figma: Work frame, node 14:37).

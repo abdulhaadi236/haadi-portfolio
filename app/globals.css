@@ -383,15 +383,16 @@ a:focus-visible {
   transition: top 0.3s ease;
 }
 
-/* Scroll-wheel icon between the titles and the thumbnail, centred on the thumbnail's height.
-   12-frame sprite (Icons/Icon-Animation), 51 × 96 per frame; JS steps background-position. */
+/* Scroll-wheel icon to the left of the titles, at the thumbnail's mid-height.
+   12-frame sprite (Icons/Icon-Animation-2), 33 × 96 per frame; JS steps background-position.
+   (First animation: /images/ui/scroll-wheel.png, 51px frames, 612px strip.) */
 .work-list__wheel {
   position: absolute;
-  left: 263px;                        /* right end of the 338px titles column, 24px clear of the thumbnail */
+  left: -72px;                        /* 24px left of the lime marker square */
   top: calc((372px - 96px) / 2);
-  width: 51px;
+  width: 33px;
   height: 96px;
-  background: url('/images/ui/scroll-wheel.png') 0 0 / 612px 96px no-repeat;
+  background: url('/images/ui/scroll-wheel-2.png') 0 0 / 396px 96px no-repeat;
   cursor: grab;
   touch-action: none;
   user-select: none;
