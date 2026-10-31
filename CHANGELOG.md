@@ -1,5 +1,8 @@
 # Changelog
 
+## 2026-10-31 — Solid lime nav marks again
+- Reverted the lime glass: nav marks are solid lime again. The word inside the lime block is always black (also over the Home video / Visual Arts image).
+
 ## 2026-10-31 — Lime glass nav marks
 - Nav marks (hover bar, click, current-page block) are now lime glass: translucent lime gradient (90%→68%), bright top edge, lime outline. The word on the block keeps the nav's text colour (black on white pages, white over video/images).
 
