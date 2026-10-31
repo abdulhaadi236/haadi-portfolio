@@ -12,7 +12,7 @@ Portfolio site for Abdul Haadi, visual artist.
 - Netlify site: `haadih` → https://haadih.netlify.app (site id `61716abf-9fd0-4f05-b9ff-141f3871b30c`) — linked to the GitHub repo (confirmed by user 2026-10-03), auto-deploys on push to `main`
 
 ## Workflow
-1. **Iterate locally.** Preview with the `dev` config in `.claude/launch.json` (http://localhost:3000).
+1. **Iterate locally.** Preview with the `dev` config in `.claude/launch.json` (port 3000, or an auto-assigned port if taken — another copy lives in `~/Desktop/haadi-portfolio`).
 2. **Every meaningful change = one git commit** with a clear message. Tag milestones (`git tag v1-…`).
    Risky/experimental work goes on a branch (`git switch -c try/<idea>`).
 3. **Never push to `main` unless the user says "deploy".** Pushing `main` triggers the Netlify production deploy.

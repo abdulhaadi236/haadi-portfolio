@@ -30,10 +30,27 @@ export const metadata = {
   },
 }
 
+export const viewport = {
+  themeColor: '#ffffff',
+}
+
+// Tells search engines who the site is about (name, role, official profiles)
+const person = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Abdul Haadi',
+  jobTitle: 'Visual Artist',
+  description,
+  url: 'https://haadih.netlify.app',
+  image: 'https://haadih.netlify.app/images/profile.jpg',
+  sameAs: ['https://www.instagram.com/fromhaadi/', 'https://www.youtube.com/@abdulhaadi236'],
+}
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={montserrat.className}>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(person) }} />
         <SiteNav />
         {children}
       </body>

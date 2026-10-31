@@ -6,14 +6,14 @@ export const metadata = { title: 'Page not found' }
 export default function NotFound() {
   return (
     <main className="page centred">
-      <div className="not-found">
+      <div className="block-page">
         <h1 className="block-title in-production">
           <i className="block-title__square" aria-hidden="true" />
           <span>This page</span>
           <span>doesn’t</span>
           <span>exist</span>
         </h1>
-        <Link href="/" className="not-found__home">Back to home</Link>
+        <Link href="/" className="block-page__link">Back to home</Link>
       </div>
     </main>
   )

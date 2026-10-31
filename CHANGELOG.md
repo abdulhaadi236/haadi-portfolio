@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-10-31 — Second full review
+- Fixed: About page scrolled sideways on mid-size screens (~1000px).
+- Fixed: thumbnail pile cut off on shorter laptop screens — card size now follows viewport height (564×372 max).
+- Tablet (700–1100px) Visual Arts gallery: two columns, aligned with the logo.
+- Nav shows the current page (slightly heavier text, no width shift).
+- In production page links onward to Visual Arts work (shared `.block-page` style with 404).
+- Soft fade-in when a page opens (respects reduced motion).
+- SEO: `sitemap.xml`, `robots.txt`, Person structured data (Instagram + YouTube @abdulhaadi236), theme colour, apple-touch icon.
+- `netlify.toml`: 1-week browser caching for `/video/*` and `/images/*`.
+- Preview config: `autoPort` on (port 3000 often taken by another local copy in ~/Desktop/haadi-portfolio).
+
 ## 2026-10-24 — Design + technical review
 - Work deck: stack 10px steps; hovered card rises 320px (≈ full image) and returns to full size/sharpness.
 - One lime accent everywhere (#C0FF65).

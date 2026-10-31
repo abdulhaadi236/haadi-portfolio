@@ -54,6 +54,15 @@ a:focus-visible {
   min-height: 100vh;
   min-height: 100svh;
   padding-top: var(--nav-h);
+  animation: page-in 0.5s var(--ease-in-out) both;
+}
+
+/* Soft fade-in when a page opens */
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
 }
 
 /* Lime square that rises from below on hover (nav links, resume link) */
@@ -115,6 +124,11 @@ a:focus-visible {
   z-index: 1;
 }
 
+/* Current page: slightly heavier text (stroke, so the width doesn't change) */
+.site-nav__link.is-active span {
+  -webkit-text-stroke: 0.4px currentColor;
+}
+
 /* Centred under the link, straddling the bar's bottom edge with room below the text.
    A short 6px rise with a slight springy overshoot — quick and tactile. */
 .site-nav__link .hover-square {
@@ -155,8 +169,9 @@ a:focus-visible {
 /* ---------- About (Figma: About, node 14:14) ----------
    Photo at x=292 y=120, bio 805 wide from y=375, resume link bottom-right ending at x=1251. */
 .about__inner {
-  width: min(959px, 100% - 32px);
-  margin: 65px 0 0 max(16px, calc(50% - 428px));
+  --left: max(16px, calc(50% - 428px));
+  width: min(959px, 100% - var(--left) - 16px);   /* never wider than the screen */
+  margin: 65px 0 0 var(--left);
   padding-bottom: 64px;
 }
 
@@ -326,12 +341,15 @@ a:focus-visible {
 
 .work-list__deck {
   --step: 10px;          /* offset between stacked cards */
-  --pull: 320px;         /* a hovered card's top rises this far above the pile, whatever its depth —
-                            372px cards, so only ~50px stays tucked in the pile */
+  /* Card size follows the screen height so the whole pile (plus a lifted card) fits on
+     shorter laptop screens; 564 × 372 (Figma) on tall screens. */
+  --card-h: clamp(240px, calc((100vh - 290px) / 1.86), 372px);
+  --card-w: calc(var(--card-h) * 1.516);
+  --pull: calc(var(--card-h) * 0.86);   /* lifted card rises ~86% out of the pile */
   position: relative;
   display: block;
-  width: calc(564px + 11 * var(--step));
-  height: calc(372px + 11 * var(--step));
+  width: calc(var(--card-w) + 11 * var(--step));
+  height: calc(var(--card-h) + 11 * var(--step));
   margin-top: var(--pull);   /* pile sits lower, leaving room to pull cards up */
   flex-shrink: 0;
 }
@@ -340,8 +358,8 @@ a:focus-visible {
   position: absolute;
   left: 0;
   top: 0;
-  width: 564px;
-  height: 372px;
+  width: var(--card-w);
+  height: var(--card-h);
   overflow: hidden;
   background: #eee;
   transform-origin: top left;
@@ -413,6 +431,21 @@ a:focus-visible {
   .work-list__titles {
     width: min(564px, 100%);
     min-width: 0;   /* don't let 1200px thumbnails widen the column */
+  }
+
+  /* Tablets: two-column gallery instead of one narrow column */
+  @media (min-width: 700px) {
+    .work-list__inner {
+      margin-left: var(--gutter);    /* aligned with the logo */
+      margin-right: var(--gutter);
+    }
+
+    .work-list__titles {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      column-gap: 32px;
+    }
   }
 
   /* Gallery layout: every title sharp, no moving marker */
@@ -526,16 +559,21 @@ a:focus-visible {
   }
 }
 
-/* ---------- 404 ---------- */
-.not-found {
+/* ---------- Block-title page with a link underneath (In production, 404) ---------- */
+.block-page {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 88px;   /* clear of the lime block that hangs below the title */
 }
 
-.not-found__home {
+.block-page__link {
   font-size: 18px;
   text-decoration: underline;
   text-underline-offset: 4px;
+}
+
+.block-page__link:hover {
+  text-decoration-color: var(--lime);
+  text-decoration-thickness: 3px;
 }
