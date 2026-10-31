@@ -1,5 +1,8 @@
 # Changelog
 
+## 2026-10-31 — Lime glass nav marks
+- Nav marks (hover bar, click, current-page block) are now lime glass: translucent lime gradient (90%→68%), bright top edge, lime outline. The word on the block keeps the nav's text colour (black on white pages, white over video/images).
+
 ## 2026-10-31 — White nav links on Visual Arts
 - Visual Arts (computers): About/Contact nav links are white over the image (glow removed); logo stays black over the white left side; active word stays black on lime. Other pages unchanged.
 
