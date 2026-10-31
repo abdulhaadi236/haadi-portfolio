@@ -1,5 +1,8 @@
 # Changelog
 
+## 2026-10-31 — Glass back on Visual Arts
+- Reverted "image starts below the nav" (it made the nav look like a white bar). Image runs under the glass again; nav words get a soft white glow on that page (computers) for readability over the dark image.
+
 ## 2026-10-31 — One glass nav; dark mode removed
 - Nav uses the same clear frosted glass on every page (rgba(255,255,255,.08) + blur + faint bottom line); only text colour adapts (white over Home video / phone images, black elsewhere).
 - Removed dark mode entirely (tokens, nav switch, no-flash script, dark theme-color). Site is light only, regardless of device setting.
