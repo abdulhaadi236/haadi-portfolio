@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-10-31 — Nav animation, dark mode, work pages, looping dial
+- Nav (Figma nav concept): each link has an accent mark — hover: 30×12 bar rises into the bottom of the nav and the word lifts 3px; click: bar shoots to full height; current page: widens to cover the word (text in --on-accent). Replaces the old half-outside square and the text-stroke current-page marker. Nav glass now Figma's rgba(247,247,247,.7).
+- Dark mode (Figma Black-Version frames): #181818 background, white text, grey glass nav, blue accent #0014F9 replacing lime everywhere. Follows the device setting; small half-filled-circle switch in the nav remembers the choice (localStorage, applied before first paint — no flash).
+- Visual Arts desktop: page background with the work image fading in from the right (alpha gradient), titles in the page text colour; phones keep the full image + tint + white titles + clear nav.
+- Dial: complete loop (after the last work comes the first; always titles above and below), 16° per title (~65px near the middle), springy detent snap (0.32s overshoot). Wrapping titles jump across the hidden back.
+- New work pages `/work/visual-arts/<slug>` (Figma Youtube Embed frame): YouTube embed (privacy-enhanced), Title/Medium/Duration, About Work, Display image (thumbnail until supplied). Clicking the selected dial title opens it. Text fields in `app/data/works.js` (medium, duration, about[], display). Added to sitemap.
+- Fixed regression from v13: "in production" and Contact page styles had been deleted; restored.
+- Local test driver kept in `.claude/tools/browse.mjs` (gitignored).
+
 ## 2026-10-31 — Full-screen thumbnail background on desktop
 - Desktop now matches phones: selected work's thumbnail fills the screen (cross-fade, left-weighted dark tint), dial floats in front, vertically centred, titles at Figma's x=292; white titles, selected black on the lime bar. Right-hand thumbnail frame removed.
 - Mouse wheel turns the dial anywhere on the page (page never scrolls here).

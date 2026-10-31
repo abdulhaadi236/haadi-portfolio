@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import Link from 'next/link'
 import { works } from '../../data/works'
 import { tick } from './tick'
 
@@ -12,23 +13,34 @@ const PULSE_MS = 160    // how long the square stays stretched after a wheel not
 const BLUR = [0, 1, 1.5, 2, 3, 3.5, 4, 5]
 
 // Work list as a dial (Figma: Work frame, node 14:37).
-// The titles sit on a turning drum: the selected title faces the viewer in the middle row, sharp,
-// over a lime bar; the others tilt away round the curve above and below, blurring with distance. Turn the dial with the mouse wheel/trackpad (one title per
-// notch, with a tick), by dragging the lime square up/down, or by clicking a title. The square
-// stretches while dragging (Figma "Scroll" frame: 30×30 → 30×57 up / 30×59 down).
-// Clicking the title in the bar, or the thumbnail, opens that work's video.
+// The titles sit round a complete, endless drum: the selected title faces the viewer in the middle
+// row, sharp, over a lime bar; the others tilt away round the curve above and below, blurring with
+// distance, and the list loops (after the last work comes the first). Turn the dial with the mouse
+// wheel/trackpad (one title per notch, with a tick and a springy detent), by dragging the lime
+// square up/down, or by clicking a title. The square stretches while dragging (Figma "Scroll"
+// frame: 30×30 → 30×57 up / 30×59 down).
+// Clicking the title in the bar opens that work's page (video, details, about, display).
 // On tablets/phones the thumbnail fills the screen behind the dial, and swiping up/down on the
 // dial turns it (same steps, tick and square stretch).
 const SWIPE_STEP = 30   // px of finger travel on touch screens that counts as one step
 const TAP_SLOP = 6      // finger movement below this is a tap, not a swipe
+const N = works.length
+
+// Rows from the middle, going the short way round the loop: −6 … +5 for 12 works
+const wrapOffset = (i, active) => ((((i - active + N / 2) % N) + N) % N) - Math.floor(N / 2)
+
 export default function WorkList() {
   const [active, setActive] = useState(0)
   const activeRef = useRef(0)
   const innerRef = useRef(null)
   const knobRef = useRef(null)
+  // The selected index as last shown on screen (updated after each render, so React's
+  // development double-render can't disturb the wrap detection below)
+  const shownActive = useRef(0)
+  useEffect(() => { shownActive.current = active }, [active])
 
   const select = (i) => {
-    const next = Math.min(Math.max(i, 0), works.length - 1)
+    const next = ((i % N) + N) % N     // endless: wraps past either end
     if (next === activeRef.current) return false
     activeRef.current = next
     setActive(next)
@@ -162,41 +174,39 @@ export default function WorkList() {
 
         <div className="work-list__dial">
           <ol className="work-list__titles" style={{ '--active': active }}>
-            {works.map((work, i) => (
+            {works.map((work, i) => {
+              const offset = wrapOffset(i, active)
+              // A title that wraps from one end of the loop to the other jumps across the hidden
+              // back of the drum instead of sweeping across the front
+              const wrapping = Math.abs(offset - wrapOffset(i, shownActive.current)) > N / 2
+              return (
               <li
                 key={work.slug}
+                className={wrapping ? 'is-wrapping' : undefined}
                 style={{
-                  '--offset': i - active,                 // rows from the middle (− above, + below)
-                  '--dist': Math.abs(i - active),
-                  '--blur': `${BLUR[Math.min(Math.abs(i - active), BLUR.length - 1)]}px`,
+                  '--offset': offset,                     // rows from the middle (− above, + below)
+                  '--dist': Math.abs(offset),
+                  '--blur': `${BLUR[Math.min(Math.abs(offset), BLUR.length - 1)]}px`,
                 }}
               >
-                <a
+                <Link
                   className="work-list__title"
-                  href={work.youtube}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href={`/work/visual-arts/${work.slug}`}
                   aria-current={i === active ? 'true' : undefined}
                   onClick={(e) => onTitleClick(e, i)}
                   onFocus={(e) => onTitleFocus(e, i)}
                 >
                   {work.title}
-                </a>
+                </Link>
               </li>
-            ))}
+              )
+            })}
           </ol>
         </div>
       </div>
 
       {/* Thumbnail of the selected work (full-screen background on phones); images cross-fade. */}
-      <a
-        className="work-list__frame"
-        href={works[active].youtube}
-        target="_blank"
-        rel="noopener noreferrer"
-        tabIndex={-1}
-        aria-hidden="true"
-      >
+      <div className="work-list__frame" aria-hidden="true">
         {works.map((work, i) => (
           <img
             key={work.slug}
@@ -205,7 +215,7 @@ export default function WorkList() {
             className={i === active ? 'is-active' : ''}
           />
         ))}
-      </a>
+      </div>
     </div>
   )
 }

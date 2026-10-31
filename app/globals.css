@@ -1,15 +1,42 @@
-/* Design tokens — sampled from the Figma frames (Figma file J4gQYhBJRVQoV37zq005mt) */
+/* Design tokens — sampled from the Figma frames (Figma file J4gQYhBJRVQoV37zq005mt).
+   Light theme by default; dark theme (Figma "Black-Version" frames) follows the visitor's device
+   setting unless they pick one with the nav switch (stored as <html data-theme="light|dark">). */
 :root {
-  --lime: #C0FF65;         /* the one accent colour (Figma blocks) */
+  --lime: #C0FF65;         /* the one accent colour — lime in light, blue in dark (name kept for history) */
+  --on-accent: #000000;    /* text sitting on the accent */
   --slate: #516E6F;
   --ink: #000000;
   --paper: #FFFFFF;
+  --nav-glass: rgba(247, 247, 247, 0.7);   /* Figma Nav fill */
   --nav-h: 55px;
   --gutter: 88px;        /* Figma: logo at x=88, links end 88px from the right */
   --square: 30px;        /* lime marker square (work list, resume) */
   --nav-square: 25px;    /* lime hover square under nav links */
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  color-scheme: light;
+}
+
+/* Dark theme (Figma: About-Black-Version, Work-Black-Version) */
+:root[data-theme='dark'] {
+  --lime: #0014F9;
+  --on-accent: #FFFFFF;
+  --ink: #FFFFFF;
+  --paper: #181818;
+  --nav-glass: rgba(160, 160, 160, 0.65);   /* reads as Figma's #717171 bar over #181818 */
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --lime: #0014F9;
+    --on-accent: #FFFFFF;
+    --ink: #FFFFFF;
+    --paper: #181818;
+    --nav-glass: rgba(160, 160, 160, 0.65);
+    color-scheme: dark;
+  }
 }
 
 * {
@@ -21,6 +48,7 @@
 body {
   background: var(--paper);
   color: var(--ink);
+  transition: background-color 0.3s ease, color 0.3s ease;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -87,23 +115,31 @@ a:focus-visible {
   align-items: center;
   justify-content: space-between;
   padding: 0 var(--gutter);
-  /* White frosted glass over page content */
-  background: rgba(255, 255, 255, 0.6);
+  /* Frosted glass over page content (Figma Nav fill) */
+  background: var(--nav-glass);
   -webkit-backdrop-filter: blur(20px) saturate(160%);
   backdrop-filter: blur(20px) saturate(160%);
   color: var(--ink);
   font-size: 18px;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Home: clear dark glass over the video */
+/* Over full-screen imagery (Home video; Visual Arts on phones): clear glass, white text */
 .site-nav--on-video {
   background: rgba(255, 255, 255, 0.08);
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-  color: var(--paper);
+  color: #FFFFFF;
 }
 
 .site-nav__logo {
   font-weight: 500;
+}
+
+.site-nav__right {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  gap: 40px;
 }
 
 .site-nav__links {
@@ -112,39 +148,88 @@ a:focus-visible {
   gap: 48px;
 }
 
+/* Each link carries an accent "mark" (Figma nav concept):
+   hover  → a 30 × 12 bar rises into the bottom of the nav and the word lifts 3px;
+   click  → the bar shoots up to the full nav height and the word settles back;
+   active → it widens to cover the word, which sits on it in --on-accent. */
 .site-nav__link {
   position: relative;
   height: 100%;
   display: flex;
   align-items: center;
+  padding: 0 10px;              /* the active mark covers the word plus 10px each side… */
+  margin: 0 -10px;              /* …without changing the spacing between words */
 }
 
 .site-nav__link span {
   position: relative;
   z-index: 1;
+  transition: transform 0.4s var(--ease-out), color 0.3s ease 0.15s;
 }
 
-/* Current page: slightly heavier text (stroke, so the width doesn't change) */
-.site-nav__link.is-active span {
-  -webkit-text-stroke: 0.4px currentColor;
-}
-
-/* Centred under the link, straddling the bar's bottom edge with room below the text.
-   A short 6px rise with a slight springy overshoot — quick and tactile. */
-.site-nav__link .hover-square {
+.nav-mark {
+  position: absolute;
   left: 50%;
-  top: 44px;
-  width: var(--nav-square);
-  height: var(--nav-square);
-  margin-left: calc(var(--nav-square) / -2);
-  transform: translateY(6px);
-  transition: opacity 0.18s ease-out, transform 0.32s var(--ease-spring);
+  bottom: 0;
+  width: 30px;
+  height: 0;
+  background: var(--lime);
+  transform: translateX(-50%);
+  transition: height 0.4s var(--ease-out), width 0.4s var(--ease-out);
+  pointer-events: none;
 }
 
-.site-nav__link:hover .hover-square,
-.site-nav__link:focus-visible .hover-square {
-  opacity: 1;
-  transform: translateY(0);
+.site-nav__link:hover .nav-mark,
+.site-nav__link:focus-visible .nav-mark {
+  height: 12px;
+}
+
+.site-nav__link:hover span,
+.site-nav__link:focus-visible span {
+  transform: translateY(-3px);
+}
+
+.site-nav__link.is-pressing .nav-mark {
+  height: 100%;
+  transition-duration: 0.28s;
+}
+
+.site-nav__link.is-pressing span {
+  transform: none;
+}
+
+/* Rises first, then widens to lock onto the word */
+.site-nav__link.is-active .nav-mark {
+  width: 100%;
+  height: 100%;
+  transition: height 0.28s var(--ease-out), width 0.45s var(--ease-out) 0.18s;
+}
+
+.site-nav__link.is-active span {
+  transform: none;
+  color: var(--on-accent);
+}
+
+/* Light/dark switch: a small circle, half filled */
+.theme-toggle {
+  width: 18px;
+  height: 18px;
+  padding: 0;
+  border: 1.5px solid currentColor;
+  border-radius: 50%;
+  background: linear-gradient(90deg, currentColor 50%, transparent 50%);
+  color: inherit;
+  cursor: pointer;
+  transition: transform 0.5s var(--ease-out);
+}
+
+.theme-toggle:hover {
+  transform: rotate(180deg);
+}
+
+.theme-toggle:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
 }
 
 /* ---------- Home ---------- */
@@ -228,6 +313,84 @@ a:focus-visible {
 .about__resume:focus-visible .hover-square {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* ---------- Work page (Figma: Youtube Embed frame) ----------
+   Video 855 × 481 centred at y≈177; details, "About Work" and "Display" below in the same column. */
+.work-detail__inner {
+  width: min(855px, 100% - 32px);
+  margin: 122px auto 0;
+  padding-bottom: 120px;
+}
+
+.work-detail__video {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: #d9d9d9;
+}
+
+.work-detail__video iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.work-detail__meta {
+  margin-top: 72px;
+  font-size: 16px;
+  line-height: 36px;
+}
+
+.work-detail__meta div {
+  display: flex;
+  gap: 8px;
+}
+
+.work-detail__section {
+  margin-top: 112px;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.work-detail__heading {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 72px;
+}
+
+.work-detail__section p + p {
+  margin-top: 1em;
+}
+
+.work-detail__placeholder {
+  opacity: 0.5;
+}
+
+.work-detail__display {
+  width: 100%;
+  aspect-ratio: 855 / 513;
+  object-fit: cover;
+  background: #d9d9d9;
+}
+
+@media (max-width: 768px) {
+  .work-detail__inner {
+    margin-top: 32px;
+  }
+
+  .work-detail__meta {
+    margin-top: 40px;
+  }
+
+  .work-detail__section {
+    margin-top: 64px;
+  }
+
+  .work-detail__heading {
+    margin-bottom: 24px;
+  }
 }
 
 /* ---------- Large title over a lime block (Work chooser, In production, Contact) ----------
@@ -335,11 +498,11 @@ a:focus-visible {
 /* The drum: titles are placed round a horizontal cylinder (radius --r, --step degrees apart),
    centred on the thumbnail's middle (187.5px down). Seen in perspective, the cylinder's top and
    bottom edges land exactly on the thumbnail's top and bottom: R·p/(p+R) = 187.5 → R ≈ 237px.
-   R·sin(step) ≈ 33px, so titles near the middle keep Figma's spacing; further out they foreshorten
-   and crowd together like a real dial. */
+   16° apart (R·sin16° ≈ 65px near the middle); further out titles foreshorten and crowd together
+   like a real dial, and the list loops so the curve is always full above and below. */
 .work-list__dial {
   --r: 236.8px;
-  --step: 8deg;
+  --step: 16deg;      /* a complete loop: 12 titles fill the curve to the thumbnail's edges */
   perspective: 900px;
   perspective-origin: 24px 187.5px;   /* viewed from the titles' left edge, so they stay left-aligned */
 }
@@ -363,13 +526,18 @@ a:focus-visible {
   transform: rotateX(calc(var(--offset) * var(--step) * -1)) translateZ(var(--r));
   backface-visibility: hidden;                 /* titles round the back of the drum disappear */
   -webkit-backface-visibility: hidden;
-  color: var(--paper);
+  color: var(--ink);
   filter: blur(var(--blur));
   opacity: calc(1 - var(--dist) * 0.06);
   transition:
-    transform 0.18s cubic-bezier(0.2, 0.9, 0.3, 1),   /* quick click into place */
+    transform 0.32s cubic-bezier(0.34, 1.56, 0.64, 1),   /* overshoots its mark and settles back — a detent */
     filter 0.2s ease,
     opacity 0.2s ease;
+}
+
+/* Wrapping from one end of the loop to the other: jump across the hidden back, no sweep */
+.work-list__titles li.is-wrapping {
+  transition: none;
 }
 
 .work-list__title {
@@ -379,7 +547,7 @@ a:focus-visible {
 }
 
 .work-list__title[aria-current] {
-  color: var(--ink);                     /* black on the lime bar */
+  color: var(--on-accent);               /* black on lime (light) / white on blue (dark) */
 }
 
 .work-list__bar {
@@ -420,22 +588,43 @@ a:focus-visible {
   height: 59px;
 }
 
-/* Full-screen background: the selected work's thumbnail */
+/* Background: the selected work's thumbnail. On computers it sits on the right and fades to
+   transparent towards the titles (Figma Work-Titles); on phones it fills the screen (below). */
 .work-list__frame {
   position: absolute;
   inset: 0;
   z-index: 0;
   overflow: hidden;
   pointer-events: none;                  /* clicks/taps go to the dial, not the background */
-  background: #111;
+  -webkit-mask-image: linear-gradient(90deg, transparent 12%, rgba(0, 0, 0, 0.55) 50%, #000 92%);
+  mask-image: linear-gradient(90deg, transparent 12%, rgba(0, 0, 0, 0.55) 50%, #000 92%);
 }
 
-/* Darken the image, most on the left where the titles are, so white text stays readable */
-.work-list__frame::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0.62), rgba(0, 0, 0, 0.42) 40%, rgba(0, 0, 0, 0.18));
+/* Phones and tablets: full image, darkened (most on the left) so white titles stay readable */
+@media (max-width: 1100px) {
+  .work-list__frame {
+    -webkit-mask-image: none;
+    mask-image: none;
+    background: #111;
+  }
+
+  .work-list__frame::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(0, 0, 0, 0.62), rgba(0, 0, 0, 0.42) 40%, rgba(0, 0, 0, 0.18));
+  }
+
+  .work-list__titles li {
+    color: #FFFFFF;
+  }
+
+  /* Nav over the full-screen image: clear glass, white text (as on Home) */
+  .site-nav--on-image {
+    background: rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    color: #FFFFFF;
+  }
 }
 
 .work-list__frame img {
@@ -471,6 +660,10 @@ a:focus-visible {
 
   .site-nav__links {
     gap: 24px;
+  }
+
+  .site-nav__right {
+    gap: 20px;
   }
 
   .about__inner {
@@ -527,6 +720,37 @@ a:focus-visible {
     transition-duration: 0.01ms !important;
     animation-duration: 0.01ms !important;
   }
+}
+
+/* ---------- In production ---------- */
+.in-production {
+  font-size: 54px;
+  font-weight: 500;
+  line-height: 66px;
+}
+
+.in-production .block-title__square {
+  left: 81px;
+  top: 75px;
+}
+
+/* ---------- Contact — 24px lines, 64px apart; block behind the left of both lines ---------- */
+.contact {
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 34px;
+  gap: 30px;
+  margin-top: -76px;   /* Figma centres the block, not the text */
+}
+
+.contact .block-title__square {
+  left: 32px;
+  top: -28px;
+}
+
+.contact a:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }
 
 /* ---------- Block-title page with a link underneath (In production, 404) ---------- */

@@ -2,6 +2,11 @@
 
 Record of choices and why, newest first.
 
+## 2026-10-31 — Dark mode & nav
+- Figma has no theme switch; added a minimal half-filled circle after Contact. Default = device setting.
+- Accent variable keeps the name `--lime` but is blue in dark mode; `--on-accent` gives readable text on it (black on lime, white on blue).
+- Figma MCP rate limit hit again (a truncated oversized page read seems to consume calls); user supplied PNG exports. Read single frames by id, never the whole page.
+
 ## 2026-10-31 — Drum centred on thumbnail
 - User wanted the dial's top/bottom to match the thumbnail's. A cylinder only reaches both edges from the centre, so the middle row (and lime bar/square) moved from Figma's y=344 to the thumbnail centre y=325.
 
