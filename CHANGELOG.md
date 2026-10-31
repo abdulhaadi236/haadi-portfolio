@@ -1,5 +1,8 @@
 # Changelog
 
+## 2026-10-31 — Bio date
+- About: replaced "returns to Twelve Gates Arts … in November 2026" with a timeless line listing Twelve Gates Arts alongside the other venues. Icons folder confirmed not needed (unused, gitignored).
+
 ## 2026-10-31 — Second full review
 - Fixed: About page scrolled sideways on mid-size screens (~1000px).
 - Fixed: thumbnail pile cut off on shorter laptop screens — card size now follows viewport height (564×372 max).

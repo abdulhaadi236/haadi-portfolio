@@ -31,9 +31,8 @@ export default function About() {
             the painting, movement and sound.
           </p>
           <p>
-            He returns to Twelve Gates Arts in Philadelphia as an exhibiting artist in November 2026. He
-            has also exhibited at the Anderson Gallery in Richmond, Virginia, and at the National Art
-            Gallery in Islamabad. He took part in Where Soft Blades Meet, a group exhibition organized by
+            He has exhibited at Twelve Gates Arts in Philadelphia, the Anderson Gallery in Richmond,
+            Virginia, and the National Art Gallery in Islamabad. He took part in Where Soft Blades Meet, a group exhibition organized by
             the Lahore Biennale Foundation, and in Art Exchange, a moving image exhibition by the British
             Council and Lux Awards. He completed the Home Is Horizon residency at Art Articulate in Lahore,
             and has shown work at the Lahore Digital Festival, Haam Gallery and the Faiz Festival.
