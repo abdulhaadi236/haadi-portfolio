@@ -1,5 +1,8 @@
 # Changelog
 
+## 2026-10-31 — Back to scroll-wheel animation 1
+- Switched back to `Icons/Icon-Animation` (first set), keeping the 72px height, ~55px clearance and feathered edges. Sprite rebuilt with ~2px transparent padding per frame (1320×192 → shown 495×72, 41.25px frames) so no sliver of a neighbouring frame shows at fractional sizes. Animation 2 sprite kept (`scroll-wheel-2.png`).
+
 ## 2026-10-31 — Scroll wheel refinements
 - Wheel smaller (33×96 → 25×72), further left (55px clear of the lime marker), feathered top and bottom (mask fade).
 
