@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-10-31 — Full-screen thumbnail background on desktop
+- Desktop now matches phones: selected work's thumbnail fills the screen (cross-fade, left-weighted dark tint), dial floats in front, vertically centred, titles at Figma's x=292; white titles, selected black on the lime bar. Right-hand thumbnail frame removed.
+- Mouse wheel turns the dial anywhere on the page (page never scrolls here).
+- Nav on /work/visual-arts uses the clear glass + white text style (same as Home), since it sits over imagery.
+
 ## 2026-10-31 — Dial on phones and tablets
 - ≤1100px: replaced the thumbnail gallery with the dial. Selected work's thumbnail fills the screen (cross-fades, dark left-weighted tint); dial floats in front, vertically centred; titles white, selected black on the lime bar; lime square at the left gutter.
 - Touch: swipe up/down on the dial = one title per 30px (with tick + square stretch); tap a title to bring it to the middle; tap the selected title to open the video. A swipe never counts as a tap.

@@ -124,13 +124,14 @@ export default function WorkList() {
     const unlock = () => tick.unlock?.()
     unlock()   // works straight away if the visitor arrived by clicking a link on the site
 
-    inner.addEventListener('wheel', onWheel, { passive: false })
+    // The page never scrolls here, so the wheel turns the dial wherever the pointer is
+    window.addEventListener('wheel', onWheel, { passive: false })
     inner.addEventListener('keydown', onKey)
     inner.addEventListener('pointerdown', onDragStart)
     window.addEventListener('pointerdown', unlock)
     return () => {
       clearTimeout(pulse)
-      inner.removeEventListener('wheel', onWheel)
+      window.removeEventListener('wheel', onWheel)
       inner.removeEventListener('keydown', onKey)
       inner.removeEventListener('pointerdown', onDragStart)
       window.removeEventListener('pointermove', onDragMove)

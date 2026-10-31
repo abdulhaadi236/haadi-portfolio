@@ -302,27 +302,26 @@ a:focus-visible {
    The selected title sits in the middle row over a lime bar (x=261, 247 × 30); the lime square
    (x=213, 30 × 30) is the drag handle. Middle row is centred on the thumbnail (Figma had it 19.5px
    lower) so the drum can span the thumbnail's full height.
-   Thumbnail 568 × 375 at x=580. */
-.work-list__inner {
-  position: relative;
-  display: flex;
-  margin: 82px 0 0 max(16px, calc(50% - 428px));
-}
+   Behind it, the selected work's thumbnail fills the whole screen (all screen sizes). */
 
-/* Groups the lime bar, square and dial (they're positioned relative to it) */
+/* Groups the lime bar, square and dial (they're positioned relative to it). Centred vertically;
+   titles at Figma's x=292 on wide screens, with room for the lime square on narrow ones. */
 .work-list__control {
-  position: relative;
-  width: 288px;
+  position: absolute;
+  z-index: 1;
+  left: max(calc(var(--gutter) + 79px), calc(50% - 428px));
+  top: calc(50% + var(--nav-h) / 2 - 187.5px);
+  width: min(288px, 100% - var(--gutter) - 79px - 12px);
   height: 375px;
-  flex-shrink: 0;
+  touch-action: none;                    /* vertical swipes turn the dial instead of scrolling */
 }
 
 .work-list__dial {
   position: relative;
   z-index: 1;                 /* titles above the lime bar */
-  /* 288px column plus 24px each side so blurred text isn't sliced at the edges;
-     the negative margins keep titles and thumbnail exactly where Figma has them */
-  width: calc(288px + 48px);
+  /* column plus 24px each side so blurred text isn't sliced at the edges;
+     the negative margins keep the titles exactly where Figma has them */
+  width: calc(100% + 48px);
   margin: 0 -24px;
   padding: 0 24px;
   height: 375px;
@@ -364,6 +363,7 @@ a:focus-visible {
   transform: rotateX(calc(var(--offset) * var(--step) * -1)) translateZ(var(--r));
   backface-visibility: hidden;                 /* titles round the back of the drum disappear */
   -webkit-backface-visibility: hidden;
+  color: var(--paper);
   filter: blur(var(--blur));
   opacity: calc(1 - var(--dist) * 0.06);
   transition:
@@ -376,6 +376,10 @@ a:focus-visible {
   font-size: 16px;
   line-height: 20px;
   cursor: pointer;
+}
+
+.work-list__title[aria-current] {
+  color: var(--ink);                     /* black on the lime bar */
 }
 
 .work-list__bar {
@@ -416,14 +420,22 @@ a:focus-visible {
   height: 59px;
 }
 
+/* Full-screen background: the selected work's thumbnail */
 .work-list__frame {
-  position: relative;
-  display: block;
-  width: 568px;
-  height: 375px;
-  flex-shrink: 0;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
   overflow: hidden;
-  background: #eee;
+  pointer-events: none;                  /* clicks/taps go to the dial, not the background */
+  background: #111;
+}
+
+/* Darken the image, most on the left where the titles are, so white text stays readable */
+.work-list__frame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.62), rgba(0, 0, 0, 0.42) 40%, rgba(0, 0, 0, 0.18));
 }
 
 .work-list__frame img {
@@ -446,54 +458,6 @@ a:focus-visible {
   height: 100vh;
   height: 100svh;
   overflow: hidden;
-}
-
-/* Tablets and phones: the selected work's thumbnail fills the screen and the dial floats in
-   front of it, centred vertically (swipe on the dial to turn it). */
-@media (max-width: 1100px) {
-  .work-list__inner {
-    position: static;
-    margin: 0;
-  }
-
-  .work-list__frame {
-    position: absolute;
-    inset: 0;
-    width: auto;
-    height: auto;
-    z-index: 0;
-    pointer-events: none;         /* taps go to the dial, not the background */
-    background: #111;
-  }
-
-  /* Darken the image, most on the left where the titles are, so white text stays readable */
-  .work-list__frame::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(90deg, rgba(0, 0, 0, 0.62), rgba(0, 0, 0, 0.3));
-  }
-
-  .work-list__control {
-    position: absolute;
-    z-index: 1;
-    left: calc(var(--gutter) + 79px);      /* room for the lime square on the left */
-    top: calc(50% + var(--nav-h) / 2 - 187.5px);
-    width: min(288px, 100% - var(--gutter) - 79px - 12px);
-    touch-action: none;                    /* vertical swipes turn the dial instead of scrolling */
-  }
-
-  .work-list__dial {
-    width: calc(100% + 48px);
-  }
-
-  .work-list__titles li {
-    color: var(--paper);
-  }
-
-  .work-list__title[aria-current] {
-    color: var(--ink);                     /* black on the lime bar */
-  }
 }
 
 @media (max-width: 768px) {

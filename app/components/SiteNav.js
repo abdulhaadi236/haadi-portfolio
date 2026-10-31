@@ -13,7 +13,8 @@ const LINKS = [
 // sitting half on the bar and half below it.
 export default function SiteNav() {
   const pathname = usePathname()
-  const onVideo = pathname === '/'
+  // Clear glass + white text over full-screen imagery (home video, visual arts thumbnails)
+  const onVideo = pathname === '/' || pathname === '/work/visual-arts'
 
   return (
     <nav className={`site-nav${onVideo ? ' site-nav--on-video' : ''}`}>
