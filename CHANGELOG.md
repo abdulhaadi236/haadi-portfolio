@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-10-31 — Dial on phones and tablets
+- ≤1100px: replaced the thumbnail gallery with the dial. Selected work's thumbnail fills the screen (cross-fades, dark left-weighted tint); dial floats in front, vertically centred; titles white, selected black on the lime bar; lime square at the left gutter.
+- Touch: swipe up/down on the dial = one title per 30px (with tick + square stretch); tap a title to bring it to the middle; tap the selected title to open the video. A swipe never counts as a tap.
+- Dial controls grouped in `.work-list__control`; drags use window listeners (no pointer capture) so taps still reach titles. Page never scrolls on this route at any size.
+
 ## 2026-10-31 — Bigger drum, matched to thumbnail
 - Drum radius 170 → 236.8px (8° per title) so, in perspective, its top/bottom edges land on the thumbnail's top/bottom (verified: 133–138 vs 137, 511–516 vs 512). Middle row, lime bar and square moved up 19.5px to the thumbnail's vertical centre (y=325).
 
