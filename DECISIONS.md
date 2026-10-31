@@ -2,6 +2,11 @@
 
 Record of choices and why, newest first.
 
+## 2026-10-31 — Dial interaction
+- Clicking a non-selected title turns the dial to it (doesn't open YouTube); only the title in the lime bar opens its video. Keyboard focus also turns the dial (mouse focus doesn't, to avoid double handling).
+- Wheel notch gives a 160ms stretch pulse of the square in the scroll direction, matching the drag states.
+- Figma MCP limit reset by 2026-10-31; used metadata + 2 design-context reads.
+
 ## 2026-10-31 — Thumbnail interaction
 - User preferred a single thumbnail with cross-fade over the pull-up pile. Tag `v12-new-thumbnails` has the pile if wanted again.
 

@@ -4,88 +4,50 @@ import { useEffect, useRef, useState } from 'react'
 import { works } from '../../data/works'
 import { tick } from './tick'
 
-const ROW = 65          // px between titles (Figma)
 const STEP_DELTA = 40   // trackpad distance that counts as one notch
 const NOTCH = 50        // a single wheel event this big is a mouse-wheel notch → exactly one step
-const SNAP_MS = 140     // quick snap per notch — tactile, not smooth
-const DRAG_STEP = 24    // px of dragging the scroll wheel that counts as one step
-const WHEEL_FRAMES = 12 // frames in the scroll-wheel sprite (public/images/ui/scroll-wheel.png)
-const WHEEL_W = 41.25   // displayed width of one frame (strip shown at 495 × 72; animation 2: 25)
-const FRAME_MS = 16     // per frame → one full turn ≈ 0.2s
+const DRAG_STEP = 24    // px of dragging the lime square that counts as one step
+const PULSE_MS = 160    // how long the square stays stretched after a wheel notch
+// Blur by distance from the middle row (Figma: Work frame 14:37)
+const BLUR = [0, 1, 1.5, 2, 3, 3.5, 4, 5]
 
-// Work list (Figma: Work frame, node 14:37).
-// The hovered title is sharp with a lime square behind it; titles get progressively
-// blurrier the further they are from it. The thumbnail on the right cross-fades to the hovered work.
-// On desktop the titles scroll on their own (the page stays still) one title per notch, snapping
-// into place with a gear-like tick; the title under the mouse becomes the active one.
-// A scroll-wheel icon beside the list turns one full revolution per step (forward for down,
-// reversed for up) and can itself be dragged up/down to step the titles.
+// Work list as a dial (Figma: Work frame, node 14:37).
+// The selected title sits in the middle row, sharp, over a lime bar; the others roll past above
+// and below, blurring with distance. Turn the dial with the mouse wheel/trackpad (one title per
+// notch, with a tick), by dragging the lime square up/down, or by clicking a title. The square
+// stretches while dragging (Figma "Scroll" frame: 30×30 → 30×57 up / 30×59 down).
+// Clicking the title in the bar, or the thumbnail, opens that work's video.
+// On tablets/phones the same list is shown as a plain gallery.
 export default function WorkList() {
   const [active, setActive] = useState(0)
-  const listRef = useRef(null)
-  const wheelRef = useRef(null)
+  const activeRef = useRef(0)
+  const innerRef = useRef(null)
+  const knobRef = useRef(null)
+  const desktopRef = useRef(null)
+
+  const select = (i) => {
+    const next = Math.min(Math.max(i, 0), works.length - 1)
+    if (next === activeRef.current) return false
+    activeRef.current = next
+    setActive(next)
+    tick()
+    return true
+  }
 
   useEffect(() => {
-    const list = listRef.current
-    const wheel = wheelRef.current
+    const inner = innerRef.current
+    const knob = knobRef.current
     const desktop = window.matchMedia('(min-width: 1101px)')
+    desktopRef.current = desktop
     let acc = 0
-    let target = 0
-    let anim = null
-    let pointer = null
-    let spin = null
+    let pulse = null
+    let dragY = null
 
-    // After a step: the title under the mouse becomes active; if the mouse isn't over the list
-    // (e.g. dragging the wheel), the title in the top row does.
-    const updateActive = () => {
-      const li = pointer && document.elementFromPoint(pointer.x, pointer.y)?.closest('.work-list__titles li')
-      if (li) setActive([...list.querySelectorAll(':scope > li')].indexOf(li))
-      else setActive(Math.min(Math.round(target / ROW), works.length - 1))
+    const stretch = (dir) => {
+      knob.classList.toggle('is-up', dir < 0)
+      knob.classList.toggle('is-down', dir > 0)
     }
-
-    // One revolution of the wheel icon: down plays frames 2…12 then back to 1;
-    // up jumps to 12 and counts down to 1.
-    const spinWheel = (dir) => {
-      clearInterval(spin)
-      const seq = dir > 0
-        ? [...Array(WHEEL_FRAMES - 1).keys()].map((k) => k + 1).concat(0)
-        : [...Array(WHEEL_FRAMES - 1).keys()].map((k) => WHEEL_FRAMES - 1 - k).concat(0)
-      let k = 0
-      spin = setInterval(() => {
-        wheel.style.backgroundPositionX = `${-seq[k] * WHEEL_W}px`
-        if (++k >= seq.length) clearInterval(spin)
-      }, FRAME_MS)
-    }
-
-    // Move the titles by `steps` rows (±), ticking and spinning once per row
-    const step = (steps) => {
-      const max = Math.floor((list.scrollHeight - list.clientHeight) / ROW) * ROW
-      let moved = 0
-      for (let k = 0; k < Math.abs(steps); k++) {
-        const next = Math.min(Math.max(target + Math.sign(steps) * ROW, 0), max)
-        if (next === target) break
-        target = next
-        moved++
-        tick()
-      }
-      if (moved) {
-        spinWheel(Math.sign(steps))
-        snapTo(target)
-      }
-    }
-
-    const snapTo = (top) => {
-      cancelAnimationFrame(anim)
-      const from = list.scrollTop
-      const start = performance.now()
-      const frame = (now) => {
-        const p = Math.min((now - start) / SNAP_MS, 1)
-        list.scrollTop = from + (top - from) * (1 - Math.pow(1 - p, 3))   // ease-out: quick click into place
-        if (p < 1) anim = requestAnimationFrame(frame)
-        else updateActive()
-      }
-      anim = requestAnimationFrame(frame)
-    }
+    const relax = () => knob.classList.remove('is-up', 'is-down')
 
     const onWheel = (e) => {
       if (!desktop.matches) return
@@ -100,90 +62,109 @@ export default function WorkList() {
         steps = Math.trunc(acc / STEP_DELTA)
         acc -= steps * STEP_DELTA
       }
-      if (steps) step(steps)
+      for (let k = 0; k < Math.abs(steps); k++) select(activeRef.current + Math.sign(steps))
+      if (steps && dragY === null) {
+        stretch(Math.sign(steps))      // quick stretch in the scroll direction
+        clearTimeout(pulse)
+        pulse = setTimeout(relax, PULSE_MS)
+      }
     }
 
-    // Dragging the wheel icon: every DRAG_STEP px down/up moves one title
-    let dragY = null
+    // Dragging the lime square: stretches in the drag direction; every DRAG_STEP px = one title
     const onDragStart = (e) => {
       dragY = e.clientY
-      wheel.setPointerCapture(e.pointerId)
-      wheel.classList.add('is-dragging')
+      knob.setPointerCapture(e.pointerId)
+      knob.classList.add('is-dragging')
     }
     const onDragMove = (e) => {
       if (dragY === null) return
-      const steps = Math.trunc((e.clientY - dragY) / DRAG_STEP)
+      const dy = e.clientY - dragY
+      if (Math.abs(dy) > 3) stretch(Math.sign(dy))
+      const steps = Math.trunc(dy / DRAG_STEP)
       if (steps) {
         dragY += steps * DRAG_STEP
-        step(steps)
+        for (let k = 0; k < Math.abs(steps); k++) select(activeRef.current + Math.sign(steps))
       }
     }
     const onDragEnd = () => {
       dragY = null
-      wheel.classList.remove('is-dragging')
+      knob.classList.remove('is-dragging')
+      relax()
     }
 
-    const onMove = (e) => { pointer = { x: e.clientX, y: e.clientY } }
-    const onLeave = () => { pointer = null }
+    const onKey = (e) => {
+      if (!desktop.matches) return
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault()
+        select(activeRef.current + (e.key === 'ArrowDown' ? 1 : -1))
+      }
+    }
+
     // Wake the audio as soon as the visitor clicks anywhere (browsers require a click first)
     const unlock = () => tick.unlock?.()
-
     unlock()   // works straight away if the visitor arrived by clicking a link on the site
-    list.addEventListener('wheel', onWheel, { passive: false })
-    wheel.addEventListener('wheel', onWheel, { passive: false })
-    wheel.addEventListener('pointerdown', onDragStart)
-    wheel.addEventListener('pointermove', onDragMove)
-    wheel.addEventListener('pointerup', onDragEnd)
-    wheel.addEventListener('pointercancel', onDragEnd)
-    list.addEventListener('mousemove', onMove)
-    list.addEventListener('mouseleave', onLeave)
+
+    inner.addEventListener('wheel', onWheel, { passive: false })
+    inner.addEventListener('keydown', onKey)
+    knob.addEventListener('pointerdown', onDragStart)
+    knob.addEventListener('pointermove', onDragMove)
+    knob.addEventListener('pointerup', onDragEnd)
+    knob.addEventListener('pointercancel', onDragEnd)
     window.addEventListener('pointerdown', unlock)
     return () => {
-      cancelAnimationFrame(anim)
-      clearInterval(spin)
-      list.removeEventListener('wheel', onWheel)
-      wheel.removeEventListener('wheel', onWheel)
-      wheel.removeEventListener('pointerdown', onDragStart)
-      wheel.removeEventListener('pointermove', onDragMove)
-      wheel.removeEventListener('pointerup', onDragEnd)
-      wheel.removeEventListener('pointercancel', onDragEnd)
-      list.removeEventListener('mousemove', onMove)
-      list.removeEventListener('mouseleave', onLeave)
+      clearTimeout(pulse)
+      inner.removeEventListener('wheel', onWheel)
+      inner.removeEventListener('keydown', onKey)
+      knob.removeEventListener('pointerdown', onDragStart)
+      knob.removeEventListener('pointermove', onDragMove)
+      knob.removeEventListener('pointerup', onDragEnd)
+      knob.removeEventListener('pointercancel', onDragEnd)
       window.removeEventListener('pointerdown', unlock)
     }
   }, [])
 
+  // Desktop: clicking a title that isn't in the middle turns the dial to it instead of opening it
+  const onTitleClick = (e, i) => {
+    if (desktopRef.current?.matches && i !== activeRef.current) {
+      e.preventDefault()
+      select(i)
+    }
+  }
+
+  // Keyboard (Tab) focus turns the dial to that title; mouse clicks are handled by onTitleClick
+  const onTitleFocus = (e, i) => {
+    if (e.target.matches(':focus-visible')) select(i)
+  }
+
   return (
-    <div className="work-list__inner">
-      <ol className="work-list__titles" ref={listRef} style={{ '--active': active }}>
-        <i className="work-list__square" aria-hidden="true" />
-        {works.map((work, i) => {
-          const distance = Math.min(Math.abs(i - active), 5)
-          const Tag = work.youtube ? 'a' : 'span'
-          return (
-            <li key={work.slug} style={{ '--distance': distance }} onMouseEnter={() => setActive(i)}>
-              {work.youtube && (
-                <a className="work-list__thumb-link" href={work.youtube} target="_blank" rel="noopener noreferrer" tabIndex={-1} aria-hidden="true">
-                  <img className="work-list__thumb" src={`/images/work/${work.slug}.jpg`} alt="" loading="lazy" />
-                </a>
-              )}
-              <Tag
+    <div className="work-list__inner" ref={innerRef}>
+      <i className="work-list__bar" aria-hidden="true" />
+      <i className="work-list__knob" ref={knobRef} aria-hidden="true" />
+
+      <div className="work-list__dial">
+        <ol className="work-list__titles" style={{ '--active': active }}>
+          {works.map((work, i) => (
+            <li key={work.slug} style={{ '--blur': `${BLUR[Math.min(Math.abs(i - active), BLUR.length - 1)]}px` }}>
+              <a className="work-list__thumb-link" href={work.youtube} target="_blank" rel="noopener noreferrer" tabIndex={-1} aria-hidden="true">
+                <img className="work-list__thumb" src={`/images/work/${work.slug}.jpg`} alt="" loading="lazy" />
+              </a>
+              <a
                 className="work-list__title"
-                {...(work.youtube ? { href: work.youtube, target: '_blank', rel: 'noopener noreferrer' } : {})}
-                onFocus={() => setActive(i)}
+                href={work.youtube}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-current={i === active ? 'true' : undefined}
+                onClick={(e) => onTitleClick(e, i)}
+                onFocus={(e) => onTitleFocus(e, i)}
               >
                 {work.title}
-              </Tag>
+              </a>
             </li>
-          )
-        })}
-      </ol>
+          ))}
+        </ol>
+      </div>
 
-      {/* Scroll-wheel icon: spins with each step and can be dragged up/down */}
-      <div className="work-list__wheel" ref={wheelRef} aria-hidden="true" />
-
-      {/* One frame on the right (Figma: 564 × 372 at the first title); all images are layered
-          inside it and cross-fade to the hovered work. Clicking opens that work's video. */}
+      {/* Thumbnail of the selected work; all images are layered and cross-fade. */}
       <a
         className="work-list__frame"
         href={works[active].youtube}

@@ -297,122 +297,90 @@ a:focus-visible {
   transform: translate(-6px, -6px);
 }
 
-/* ---------- Work list (Figma: Work, node 14:37) ----------
-   Titles at x=306 from y=144, 65px apart; thumbnail frame 564 × 372 at x=644 (Figma 584, +60). */
+/* ---------- Work list: dial (Figma: Work, node 14:37) ----------
+   Titles at x=292 from y=137, ~33px apart, in a dial exactly the thumbnail's height (375px).
+   The selected title sits in the middle row (centre 207px down the dial) over a lime bar
+   (x=261, 247 × 30); the lime square (x=213, 30 × 30) is the drag handle.
+   Thumbnail 568 × 375 at x=580. */
 .work-list__inner {
   position: relative;
   display: flex;
-  gap: 0;
-  margin: 89px 0 0 max(16px, calc(50% - 414px));
+  margin: 82px 0 0 max(16px, calc(50% - 428px));
 }
 
-/* Desktop: the page doesn't scroll — the titles column does, one title per notch */
-@media (min-width: 1101px) {
-  .work-list {
-    height: 100vh;
-    height: 100svh;
-    overflow: hidden;
-  }
-
-  .work-list__inner {
-    height: calc(100% - 89px);
-  }
-
-  .work-list__titles {
-    height: 100%;
-    overflow-y: auto;
-    scrollbar-width: none;
-    /* Room for the lime square, which sits 15px left of the titles (a scrolling box clips overflow) */
-    padding-left: 15px;
-    margin-left: -15px;
-    padding-top: 24px;          /* first title starts below the top fade… */
-    margin-top: -24px;          /* …while staying at Figma's y=144 */
-    box-sizing: content-box;
-    /* Titles fade out at the top and bottom edges as they scroll */
-    -webkit-mask-image: linear-gradient(to bottom, transparent, #000 24px, #000 calc(100% - 120px), transparent);
-    mask-image: linear-gradient(to bottom, transparent, #000 24px, #000 calc(100% - 120px), transparent);
-  }
-
-  .work-list__titles .work-list__square {
-    left: 0;   /* inside the 15px padding instead of hanging outside */
-    top: calc(24px + var(--active) * 65px - 5px);   /* + the list's top padding */
-  }
-
-  .work-list__titles::-webkit-scrollbar {
-    display: none;
-  }
-
-  /* Spacer so every title, even the last, can scroll up to the top row */
-  .work-list__titles::after {
-    content: '';
-    display: block;
-    height: calc(100% - 65px);
-  }
+.work-list__dial {
+  position: relative;
+  z-index: 1;                 /* titles above the lime bar */
+  width: 288px;
+  height: 375px;
+  flex-shrink: 0;
+  overflow: hidden;
 }
 
 .work-list__titles {
-  position: relative;
   list-style: none;
-  width: 338px;           /* Figma 278px + 60px: thumbnail sits a little further right */
-  flex-shrink: 0;
+  /* Middle row centre is 207px down; each title is 33px tall */
+  transform: translateY(calc(207px - 16.5px - var(--active) * 33px));
+  transition: transform 0.16s cubic-bezier(0.2, 0.9, 0.3, 1);   /* quick click into place */
 }
 
 .work-list__titles li {
-  height: 65px;
-  filter: blur(calc(var(--distance) * 0.9px));
-  opacity: calc(1 - var(--distance) * 0.1);
-  transition: filter 0.3s ease, opacity 0.3s ease;
+  height: 33px;
+  display: flex;
+  align-items: center;
+  filter: blur(var(--blur));
+  transition: filter 0.2s ease;
 }
 
 .work-list__title {
-  position: relative;
-  z-index: 1;
-  display: inline-block;
   font-size: 16px;
   line-height: 20px;
   cursor: pointer;
 }
 
-.work-list__square {
+.work-list__bar {
   position: absolute;
-  left: -15px;
-  top: calc(var(--active) * 65px - 5px);
-  width: var(--square);
-  height: var(--square);
+  left: -31px;
+  top: 192px;
+  width: 247px;
+  height: 30px;
   background: var(--lime);
-  transition: top 0.3s ease;
 }
 
-/* Scroll-wheel icon to the left of the titles, at the thumbnail's mid-height.
-   12-frame sprite (Icons/Icon-Animation, with ~2px transparent padding per frame), 41.25 × 72 per frame; JS steps background-position.
-   (Animation 2: /images/ui/scroll-wheel-2.png — 25px frames, 300px strip.) */
-.work-list__wheel {
+/* Drag handle. Figma "Scroll" frame: 30 × 30 at rest, 30 × 57 dragging up (grows upward),
+   30 × 59 dragging down (grows downward); springs back on release. */
+.work-list__knob {
   position: absolute;
-  left: -111px;                       /* wheel itself ~55px clear of the lime marker square */
-  top: calc((372px - 72px) / 2);
-  width: 41.25px;
-  height: 72px;
-  background: url('/images/ui/scroll-wheel.png') 0 0 / 495px 72px no-repeat;
-  /* Feathered top and bottom, like the wheel disappears into the surface */
-  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 30%, #000 70%, transparent);
-  mask-image: linear-gradient(to bottom, transparent, #000 30%, #000 70%, transparent);
+  left: -79px;
+  top: 192px;
+  width: 30px;
+  height: 30px;
+  background: var(--lime);
   cursor: grab;
   touch-action: none;
   user-select: none;
   -webkit-user-select: none;
-  z-index: 2;
+  transition: height 0.3s var(--ease-spring), top 0.3s var(--ease-spring);
 }
 
-.work-list__wheel.is-dragging {
+.work-list__knob.is-dragging {
   cursor: grabbing;
+}
+
+.work-list__knob.is-up {
+  top: calc(192px - 27px);
+  height: 57px;
+}
+
+.work-list__knob.is-down {
+  height: 59px;
 }
 
 .work-list__frame {
   position: relative;
-  align-self: flex-start;
   display: block;
-  width: 564px;
-  height: 372px;
+  width: 568px;
+  height: 375px;
   flex-shrink: 0;
   overflow: hidden;
   background: #eee;
@@ -432,51 +400,66 @@ a:focus-visible {
   opacity: 1;
 }
 
-/* Per-title thumbnail — only shown when the frame is hidden (narrower screens) */
+/* Desktop: the page itself doesn't scroll — the dial turns instead */
+@media (min-width: 1101px) {
+  .work-list {
+    height: 100vh;
+    height: 100svh;
+    overflow: hidden;
+  }
+}
+
+/* Per-title thumbnail — only shown in the gallery layout (narrower screens) */
 .work-list__thumb {
   display: none;
 }
 
+/* Tablets and phones: a plain gallery instead of the dial */
 @media (max-width: 1100px) {
   .work-list__frame,
-  .work-list__wheel {
+  .work-list__bar,
+  .work-list__knob {
     display: none;
   }
 
   .work-list__inner {
-    margin-right: 16px;
+    margin: 89px 16px 64px max(16px, calc(50% - 414px));
   }
 
-  .work-list__titles {
+  .work-list__dial {
     width: min(564px, 100%);
+    height: auto;
+    overflow: visible;
     min-width: 0;   /* don't let 1200px thumbnails widen the column */
   }
 
-  /* Tablets: two-column gallery instead of one narrow column */
+  .work-list__titles {
+    transform: none;
+  }
+
+  /* Tablets: two-column gallery */
   @media (min-width: 700px) {
     .work-list__inner {
       margin-left: var(--gutter);    /* aligned with the logo */
       margin-right: var(--gutter);
     }
 
-    .work-list__titles {
+    .work-list__dial {
       width: 100%;
+    }
+
+    .work-list__titles {
       display: grid;
       grid-template-columns: 1fr 1fr;
       column-gap: 32px;
     }
   }
 
-  /* Gallery layout: every title sharp, no moving marker */
   .work-list__titles li {
     height: auto;
+    display: block;
     margin-bottom: 40px;
     filter: none;
-    opacity: 1;
-  }
-
-  .work-list__square {
-    display: none;
   }
 
   .work-list__thumb {
@@ -553,18 +536,6 @@ a:focus-visible {
     gap: 24px;
     margin-top: 0;
     overflow-wrap: anywhere;
-  }
-}
-
-/* Touch screens can't hover — keep every work title sharp there */
-@media (hover: none) {
-  .work-list__titles li {
-    filter: none;
-    opacity: 1;
-  }
-
-  .work-list__square {
-    display: none;
   }
 }
 

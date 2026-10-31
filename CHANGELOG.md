@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-10-31 — Work list as a dial (Figma redesign)
+- Visual Arts list rebuilt from Figma frame 14:37: titles 16px, 33px apart, in a 375px dial (thumbnail height). Selected title fixed in the middle row over a lime bar (x=261, 247×30), others blur by distance (0/1/1.5/2/3/3.5/4/5px). Thumbnail 568×375 at x=580. Positions verified pixel-exact.
+- Removed the 12-frame scroll-wheel animation (sprites deleted). Replaced by the lime square drag handle (x=213, 30×30) with Figma "Scroll" frame states: 30×57 dragging up (grows upward), 30×59 dragging down, springs back on release; short stretch pulse per wheel notch.
+- Turn the dial: mouse wheel/trackpad (one title per notch + tick), drag the square (24px per title), click a non-selected title, or arrow keys. Clicking the selected title or thumbnail opens the video.
+- Tablets/phones keep the gallery layout.
+
 ## 2026-10-31 — Back to scroll-wheel animation 1
 - Switched back to `Icons/Icon-Animation` (first set), keeping the 72px height, ~55px clearance and feathered edges. Sprite rebuilt with ~2px transparent padding per frame (1320×192 → shown 495×72, 41.25px frames) so no sliver of a neighbouring frame shows at fractional sizes. Animation 2 sprite kept (`scroll-wheel-2.png`).
 
