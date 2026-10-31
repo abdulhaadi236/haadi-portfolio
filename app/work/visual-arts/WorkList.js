@@ -8,28 +8,70 @@ const ROW = 65          // px between titles (Figma)
 const STEP_DELTA = 40   // trackpad distance that counts as one notch
 const NOTCH = 50        // a single wheel event this big is a mouse-wheel notch → exactly one step
 const SNAP_MS = 140     // quick snap per notch — tactile, not smooth
+const DRAG_STEP = 24    // px of dragging the scroll wheel that counts as one step
+const WHEEL_FRAMES = 12 // frames in the scroll-wheel sprite (public/images/ui/scroll-wheel.png)
+const WHEEL_W = 51      // displayed width of one frame
+const FRAME_MS = 16     // per frame → one full turn ≈ 0.2s
 
 // Work list (Figma: Work frame, node 14:37).
 // The hovered title is sharp with a lime square behind it; titles get progressively
 // blurrier the further they are from it. The thumbnail on the right cross-fades to the hovered work.
 // On desktop the titles scroll on their own (the page stays still) one title per notch, snapping
 // into place with a gear-like tick; the title under the mouse becomes the active one.
+// A scroll-wheel icon beside the list turns one full revolution per step (forward for down,
+// reversed for up) and can itself be dragged up/down to step the titles.
 export default function WorkList() {
   const [active, setActive] = useState(0)
   const listRef = useRef(null)
+  const wheelRef = useRef(null)
 
   useEffect(() => {
     const list = listRef.current
+    const wheel = wheelRef.current
     const desktop = window.matchMedia('(min-width: 1101px)')
     let acc = 0
     let target = 0
     let anim = null
     let pointer = null
+    let spin = null
 
-    const activateUnderPointer = () => {
-      if (!pointer) return
-      const li = document.elementFromPoint(pointer.x, pointer.y)?.closest('.work-list__titles li')
+    // After a step: the title under the mouse becomes active; if the mouse isn't over the list
+    // (e.g. dragging the wheel), the title in the top row does.
+    const updateActive = () => {
+      const li = pointer && document.elementFromPoint(pointer.x, pointer.y)?.closest('.work-list__titles li')
       if (li) setActive([...list.querySelectorAll(':scope > li')].indexOf(li))
+      else setActive(Math.min(Math.round(target / ROW), works.length - 1))
+    }
+
+    // One revolution of the wheel icon: down plays frames 2…12 then back to 1;
+    // up jumps to 12 and counts down to 1.
+    const spinWheel = (dir) => {
+      clearInterval(spin)
+      const seq = dir > 0
+        ? [...Array(WHEEL_FRAMES - 1).keys()].map((k) => k + 1).concat(0)
+        : [...Array(WHEEL_FRAMES - 1).keys()].map((k) => WHEEL_FRAMES - 1 - k).concat(0)
+      let k = 0
+      spin = setInterval(() => {
+        wheel.style.backgroundPositionX = `${-seq[k] * WHEEL_W}px`
+        if (++k >= seq.length) clearInterval(spin)
+      }, FRAME_MS)
+    }
+
+    // Move the titles by `steps` rows (±), ticking and spinning once per row
+    const step = (steps) => {
+      const max = Math.floor((list.scrollHeight - list.clientHeight) / ROW) * ROW
+      let moved = 0
+      for (let k = 0; k < Math.abs(steps); k++) {
+        const next = Math.min(Math.max(target + Math.sign(steps) * ROW, 0), max)
+        if (next === target) break
+        target = next
+        moved++
+        tick()
+      }
+      if (moved) {
+        spinWheel(Math.sign(steps))
+        snapTo(target)
+      }
     }
 
     const snapTo = (top) => {
@@ -40,7 +82,7 @@ export default function WorkList() {
         const p = Math.min((now - start) / SNAP_MS, 1)
         list.scrollTop = from + (top - from) * (1 - Math.pow(1 - p, 3))   // ease-out: quick click into place
         if (p < 1) anim = requestAnimationFrame(frame)
-        else activateUnderPointer()
+        else updateActive()
       }
       anim = requestAnimationFrame(frame)
     }
@@ -58,14 +100,27 @@ export default function WorkList() {
         steps = Math.trunc(acc / STEP_DELTA)
         acc -= steps * STEP_DELTA
       }
-      const max = Math.floor((list.scrollHeight - list.clientHeight) / ROW) * ROW
-      for (let k = 0; k < Math.abs(steps); k++) {
-        const next = Math.min(Math.max(target + Math.sign(steps) * ROW, 0), max)
-        if (next === target) break
-        target = next
-        tick()
+      if (steps) step(steps)
+    }
+
+    // Dragging the wheel icon: every DRAG_STEP px down/up moves one title
+    let dragY = null
+    const onDragStart = (e) => {
+      dragY = e.clientY
+      wheel.setPointerCapture(e.pointerId)
+      wheel.classList.add('is-dragging')
+    }
+    const onDragMove = (e) => {
+      if (dragY === null) return
+      const steps = Math.trunc((e.clientY - dragY) / DRAG_STEP)
+      if (steps) {
+        dragY += steps * DRAG_STEP
+        step(steps)
       }
-      if (steps) snapTo(target)
+    }
+    const onDragEnd = () => {
+      dragY = null
+      wheel.classList.remove('is-dragging')
     }
 
     const onMove = (e) => { pointer = { x: e.clientX, y: e.clientY } }
@@ -75,12 +130,23 @@ export default function WorkList() {
 
     unlock()   // works straight away if the visitor arrived by clicking a link on the site
     list.addEventListener('wheel', onWheel, { passive: false })
+    wheel.addEventListener('wheel', onWheel, { passive: false })
+    wheel.addEventListener('pointerdown', onDragStart)
+    wheel.addEventListener('pointermove', onDragMove)
+    wheel.addEventListener('pointerup', onDragEnd)
+    wheel.addEventListener('pointercancel', onDragEnd)
     list.addEventListener('mousemove', onMove)
     list.addEventListener('mouseleave', onLeave)
     window.addEventListener('pointerdown', unlock)
     return () => {
       cancelAnimationFrame(anim)
+      clearInterval(spin)
       list.removeEventListener('wheel', onWheel)
+      wheel.removeEventListener('wheel', onWheel)
+      wheel.removeEventListener('pointerdown', onDragStart)
+      wheel.removeEventListener('pointermove', onDragMove)
+      wheel.removeEventListener('pointerup', onDragEnd)
+      wheel.removeEventListener('pointercancel', onDragEnd)
       list.removeEventListener('mousemove', onMove)
       list.removeEventListener('mouseleave', onLeave)
       window.removeEventListener('pointerdown', unlock)
@@ -112,6 +178,9 @@ export default function WorkList() {
           )
         })}
       </ol>
+
+      {/* Scroll-wheel icon: spins with each step and can be dragged up/down */}
+      <div className="work-list__wheel" ref={wheelRef} aria-hidden="true" />
 
       {/* One frame on the right (Figma: 564 × 372 at the first title); all images are layered
           inside it and cross-fade to the hovered work. Clicking opens that work's video. */}

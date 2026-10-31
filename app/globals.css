@@ -300,6 +300,7 @@ a:focus-visible {
 /* ---------- Work list (Figma: Work, node 14:37) ----------
    Titles at x=306 from y=144, 65px apart; thumbnail frame 564 × 372 at x=644 (Figma 584, +60). */
 .work-list__inner {
+  position: relative;
   display: flex;
   gap: 0;
   margin: 89px 0 0 max(16px, calc(50% - 414px));
@@ -382,6 +383,26 @@ a:focus-visible {
   transition: top 0.3s ease;
 }
 
+/* Scroll-wheel icon between the titles and the thumbnail, centred on the thumbnail's height.
+   12-frame sprite (Icons/Icon-Animation), 51 × 96 per frame; JS steps background-position. */
+.work-list__wheel {
+  position: absolute;
+  left: 263px;                        /* right end of the 338px titles column, 24px clear of the thumbnail */
+  top: calc((372px - 96px) / 2);
+  width: 51px;
+  height: 96px;
+  background: url('/images/ui/scroll-wheel.png') 0 0 / 612px 96px no-repeat;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  z-index: 2;
+}
+
+.work-list__wheel.is-dragging {
+  cursor: grabbing;
+}
+
 .work-list__frame {
   position: relative;
   align-self: flex-start;
@@ -413,7 +434,8 @@ a:focus-visible {
 }
 
 @media (max-width: 1100px) {
-  .work-list__frame {
+  .work-list__frame,
+  .work-list__wheel {
     display: none;
   }
 

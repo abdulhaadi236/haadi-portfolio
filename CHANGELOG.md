@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-10-31 — Scroll-wheel icon
+- Added the user's 12-frame scroll-wheel animation (`Icons/Icon-Animation`) between the titles and thumbnail (desktop). Frames cropped and combined into one 1224×192 sprite (`public/images/ui/scroll-wheel.png`, 230 KB vs 7.4 MB of PNGs), shown at 51×96.
+- Each step spins one revolution: down plays 2→12→1, up jumps to 12 and plays 12→1 (~0.2s).
+- Wheel can be dragged: every 24px down/up = one title step (tick + spin). Mouse wheel over the icon also steps.
+- Stepping logic shared by mouse wheel, trackpad and drag. When the pointer isn't over the list (dragging the icon), the top-row title becomes active.
+
 ## 2026-10-31 — Gear-step title scrolling + tick sound
 - Desktop Visual Arts: page no longer scrolls; the titles column scrolls on its own in 65px steps (one title per mouse-wheel notch; trackpad: every 40px of movement), each step snapping in 140ms with a synthesised "tick" (Web Audio, `app/work/visual-arts/tick.js`, no audio file). Title under the pointer becomes active, so the thumbnail follows. Every title can reach the top (spacer); titles fade at top/bottom edges.
 - Whole title row is hoverable (was text only).
