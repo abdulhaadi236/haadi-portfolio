@@ -1,5 +1,8 @@
 # Changelog
 
+## 2026-10-31 — Work details
+- All 12 works: Medium "Animation", Duration "Loop".
+
 ## 2026-10-31 — Solid lime nav marks again
 - Reverted the lime glass: nav marks are solid lime again. The word inside the lime block is always black (also over the Home video / Visual Arts image).
 
